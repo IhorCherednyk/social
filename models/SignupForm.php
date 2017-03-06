@@ -7,11 +7,14 @@ use yii\base\Model;
 
 class SignupForm extends Model
 {
-    public $login;
     public $password;
+    public $login;
     public $email;
     public $name;
     public $sername;
+    public $role = 0;
+    public $status = 0;
+    public $last_login_date = 0;
 
     public function rules()
     {
@@ -24,20 +27,19 @@ class SignupForm extends Model
         ];
 
     }
-    public function validateLogin($attribute, $params)
-    {
-
-    }
-    
-
-    public function login()
-    {
-
-    }
-
-    public function getUser()
-    {
-
-       
+    // Переходим из контроллера в эту функцию
+    public function signup(){
+        // Проверяем валидацию полей
+        
+        if($this->validate()){
+           // если валидация успешно то создаем модель юзераипередаем в нее атрибуты которые мы получили из формы
+           $user = new User();
+           $user->attributes = $this->attributes;
+           echo '<pre>';
+           var_dump($user->attributes);
+           var_dump($this->attributes);
+           die;
+           return $user->create();
+        }
     }
 }

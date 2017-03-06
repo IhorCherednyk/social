@@ -53,7 +53,7 @@ class AuthController extends AppController {
         $model = new SignupForm();
         
         
-        if(Yii::$app->requset->isPost){
+        if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());
             if($model->signup()){
                 return $this->redirect(['auth/login']);

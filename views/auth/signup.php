@@ -23,7 +23,7 @@ $this->title = 'Login';
 
         <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
-        <?= $form->field($model, 'email')->textInput()?>
+        <?= $form->field($model, 'email')->input('email')?> 
         <?= $form->field($model, 'name')->textInput()?>
         <?= $form->field($model, 'sername')->textInput()?>
 
