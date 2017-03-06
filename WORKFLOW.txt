@@ -1,0 +1,560 @@
+
+
+---------------------------------------------------------------------------------------------------------------------------
+создание виджета
+
+создаем папку components
+в ней виджет с названием виджета 
+и в нем
+
+
+<?php
+
+namespace app\components;
+
+use yii\base\Widget;
+
+class MenuWidget extends Widget{
+
+    public $templ; // указываем тот ключ который мы указуем в виде  <?= MenuWidget::widget(['templ' => 'menu'])
+    
+    public function init(){  // создаем инит функцию
+        parent::init();  // обязательный метод
+        if($this->templ === null){ //Проверяем если в наш  templ ничего не пришло то по умолчанию он menu
+            $this->templ = 'menu';
+        }
+        $this->templ .= '.php'; // иначе задаем то что пришло что то пришло например <?= MenuWidget::widget(['templ' => 'blabla'])
+    }
+    
+    public function run(){
+        return $this->templ; // Поитогу возвращаем то что нам пришло <?= MenuWidget::widget(['templ' => 'blabla'])
+    }
+    
+}
+
+а в видах используем 
+<?= MenuWidget::widget(['templ' => 'menu'])?> не забывая про то что класс надо обявить
+
+
+для создания многоуровнего меню которое берется из базы мы дополним наш виджет
+
+
+
+<?php
+
+namespace app\components;
+
+use yii\base\Widget;
+use app\models\Category; // покдлючаем модель таблицы для выборки данных
+
+class MenuWidget extends Widget {
+
+    public $templ; // указываем тот ключ который мы указуем в виде  <?= MenuWidget::widget(['templ' => 'menu'])
+    public $data; // свойства хранения записей категории из базы данных
+    public $tree; // хранится результат работы функции в который строится масив дерева
+    public $menuHtml; // готовый html в заисимости от шаблона $this->templ
+
+    public function init() {  // создаем инит функцию
+        parent::init();  // обязательный метод
+        if ($this->templ === null) { //Проверяем если в наш  templ ничего не пришло то по умолчанию он menu
+            $this->templ = 'menu';
+        }
+        $this->templ .= '.php'; // иначе задаем то что пришло что то пришло например <?= MenuWidget::widget(['templ' => 'blabla'])
+    }
+
+    public function run() {
+        $this->data = Category::find()->indexBy('id')->asArray()->all(); // sql запрос к базе  запрос гвороит (верни мне массивы массивов где (indexBy('id') - ключи масива будут совпадать с индикаторами id ))
+        $this->tree = $this->getTree();
+        
+        return $this->templ; // Поитогу возвращаем то что нам пришло <?= MenuWidget::widget(['templ' => 'blabla'])
+    }
+
+    protected function getTree(){ // Функция берет и свзяывает как дерево данные которые мы получили из таблицы 
+        $tree = [];
+        foreach ($this->data as $id=>&$node) {
+            if (!$node['parent_id'])
+                $tree[$id] = &$node;
+            else
+                $this->data[$node['parent_id']]['childs'][$node['id']] = &$node;
+        }
+        return $tree;
+    }
+}
+
+и далее создаим для него два файла в папке компонентов и назовем их menu.php select.php
+в них создадим модель html которая будет передоваться в функцию 
+menu.php
+<li>
+    <a href="">
+        <?= $category['name']?>
+        <?php if( isset($category['childs']) ): ?>
+            <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+        <?php endif;?>
+    </a>
+    <?php if( isset($category['childs']) ): ?>
+        <ul>
+            <?= $this->getMenuHtml($category['childs'])?>
+        </ul>
+    <?php endif;?>
+</li>
+
+
+а сам видже выгядит так 
+
+<?php
+
+namespace app\components;
+
+use yii\base\Widget;
+use app\models\Category; // покдлючаем модель таблицы для выборки данных
+
+class MenuWidget extends Widget {
+
+    public $tpl; // указываем тот ключ который мы указуем в виде  <?= MenuWidget::widget(['tpl' => 'menu'])
+    public $data; // свойства хранения записей категории из базы данных
+    public $tree; // хранится результат работы функции в который строится масив дерева
+    public $menuHtml; // готовый html в заисимости от шаблона $this->tpl
+
+    public function init() {  // создаем инит функцию
+        parent::init();  // обязательный метод
+        if ($this->tpl === null) { //Проверяем если в наш  tpl ничего не пришло то по умолчанию он menu
+            $this->tpl = 'menu';
+        }
+        $this->tpl .= '.php'; // иначе задаем то что пришло что то пришло например <?= MenuWidget::widget(['tpl' => 'blabla'])
+    }
+
+    public function run() {
+        $this->data = Category::find()->indexBy('id')->asArray()->all(); // sql запрос к базе  запрос гвороит (верни мне массивы массивов где (indexBy('id') - ключи масива будут совпадать с индикаторами id ))
+        $this->tree = $this->getTree(); // создаем дерево масивов
+        
+        $this->menuHtml = $this->getMenuHtml($this->tree);
+        
+        return $this->menuHtml; // Поитогу возвращаем то что нам пришло <?= MenuWidget::widget(['tpl' => 'blabla'])
+        
+    }
+
+    protected function getTree() { // Функция берет и свзяывает как дерево данные которые мы получили из таблицы 
+        $tree = [];
+        foreach ($this->data as $id => &$node) {
+            if (!$node['parent_id'])
+                $tree[$id] = &$node;
+            else
+                $this->data[$node['parent_id']]['childs'][$node['id']] = &$node;
+        }
+        
+        return $tree;
+    }
+
+    protected function getMenuHtml($tree) {
+        $str = '';
+        foreach ($tree as $category) {
+            $str .= $this->catToTemplate($category);
+        }
+        
+        return $str;
+    }
+
+    protected function catToTemplate($category) {
+        ob_start(); // используем буферизацию которая записует html 
+        include __DIR__ . '/menu_tpl/' . $this->tpl;
+        
+        return ob_get_clean(); // этот метод возвращает забуферизированый html
+    }
+
+}
+
+далее подключим файлы либы 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+кеширование данных
+cash хранить в папке runtnime
+public function run() {
+
+    $menu = Yii::$app->cache->get('menu');
+    if($menu) return $menu;
+
+        $this->data = Category::find()->indexBy('id')->asArray()->all(); // sql запрос к базе  запрос гвороит (верни мне массивы массивов где (indexBy('id') - ключи масива будут совпадать с индикаторами id ))
+        $this->tree = $this->getTree(); // создаем дерево масивов
+        $this->menuHtml = $this->getMenuHtml($this->tree);
+        
+        Yii::$app->cache->set('menu', $this->menuHtml, 60);
+        return $this->menuHtml; // Поитогу возвращаем то что нам пришло <?= MenuWidget::widget(['tpl' => 'blabla'])
+        
+        
+
+    }
+
+    в этой функции мы первым делом проверям если у нас что то в кеше 
+    $menu = Yii::$app->cache->get('menu');
+    if($menu) return $menu;
+
+    если да то сработает return если нет то мы будем создавать кеш 
+    где 'menu' это произвольный ключ , $this->menuHtml - параметр котоырй мы запискуем, 60 - вермя в секундах
+
+    Yii::$app->cache->set('menu', $this->menuHtml, 60);
+
+
+-________________________________________________________________________________-__---------_---_____-----_
+
+                Создаем контроллеры
+                один создаем общий для всех 
+                <?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+namespace app\controllers;
+
+use yii\web\Controller;
+
+/**
+ * Description of AppController
+ *
+ * @author Anastasiya
+ */
+class AppController extends Controller{
+}
+от которого будут наследовать все остальные
+
+
+и создаем нужный контроллер который уже наследуют от AppController 
+
+
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+namespace app\controllers;
+use app\models\Category;
+use app\models\Product;
+use Yii;
+/**
+ * Description of CategoryController
+ *
+ * @author Anastasiya
+ */
+class CategoryController extends AppController{
+    //put your code here
+}
+
+----------------------------------------------------------------------------------------------------
+получаем в контроллере данные из бд
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+для продуктов категорий мы создавали в виджете ссылку которая ведет на  контрорллер категорий
+потом мы создали 'category/<id:\d+>' => 'category/view', правило что любой переход будет ссылаться на контролер категорий wiew
+создание ссылок
+<a href="<?= \yii\helpers\Url::to(['category/view', 'id' => $category['id']]) ?>">  создаем ссылку указуем куда она ведет в
+   контроллер category  вид view
+   дальше (по желанию) указуем как она будет показываться
+
+
+   'db' => require(__DIR__ . '/db.php'),
+   'urlManager' => [
+   'enablePrettyUrl' => true,
+   'showScriptName' => false,
+   'rules' => [
+   'category/<id:\d+>' => 'category/view', // здесь определяется как будет выглядеть наша ссылка
+   ],
+   ],
+
+
+   дальше в контроллер поскольку мы передаем в сыллке 'id' => $category['id']]  мы получим его через гед создав подходязий action в контроллере
+
+   public function actionView($id){
+   $id = Yii::$app->request->get('id');
+   D($id);
+   $products = Product::find()->where(['category_id' => $id])->all();
+   return $this->render('view', compact('products'));
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+созаем метатеги 
+
+в главном контроллере определяем метод 
+
+
+class AppController extends Controller {
+
+protected function setMeta($title = null, $keywords = null, $description = null) {
+$this->view->title = $title;
+$this->view->registerMetaTag(['name' => 'keywords', 'content' => "$keywords"]);
+$this->view->registerMetaTag(['name' => 'description', 'content' => "$description"]);
+}
+
+}
+
+и далее в основном контроллере вызываем этот метод
+
+public function actionIndex(){
+$hits = Product::find()->where(['hit' => '1'])->limit(6)->all();
+$this->setMeta('E-SHOPPER');
+return $this->render('index', compact('hits'));
+}
+
+
+а если получить что то определенное то 
+
+public function actionView($id){
+$id = Yii::$app->request->get('id');
+$products = Product::find()->where(['category_id' => $id])->all();
+
+/....///здесь мы ее используем
+$category = Category::findOne($id);
+$this->setMeta('E-SHOPPER | ' . $category->name, $category->keywords, $category->description);
+
+
+return $this->render('view', compact('products', 'category'));
+}
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+добавляем ссылку на главную
+<a href="<?= Url::home()?>">
+    <?= Html::img("@web/images/home/logo.png", ['alt' => 'logo'])?>    
+</a>
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Пагинация
+
+в контролер импортируем класс 
+
+use yii\data\Pagination;
+
+
+далее вконтроллере: мы получаем обьект запроса
+$query = Product::find()->where(['category_id' => $id]);
+после чего мы считаем количество записей 'totalCount' => $query->count()
+устанавливаем число записей выводимых на странице 'pageSize' => 
+
+$pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false]);
+
+далее мы задаем параметры для пагинации
+создаем обьект $products 
+говорит с какой записи начинать выборку  - $query->offset($pages->offset)
+берем лимит который мы передали в $pages --  limit($pages->limit)
+и выбираем все записи из нашего запроса
+$products = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+
+
+public function actionView($id) {
+$id = Yii::$app->request->get('id');
+
+/// Начало создания пагинации 
+$query = Product::find()->where(['category_id' => $id]);
+$pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false]);
+$products = $query->offset($pages->offset)->limit($pages->limit)->all();
+/// Конец создания пагинации 
+
+
+$category = Category::findOne($id);
+$this->setMeta('E-SHOPPER | ' . $category->name, $category->keywords, $category->description);
+
+return $this->render('view', compact('products', 'pages', 'category'));
+}
+
+
+
+Далее переходим в виды импортируем класс
+use yii\widgets\LinkPager;
+
+и выводим пагинацию 
+
+<?php
+echo LinkPager::widget([
+    'pagination' => $pages,
+    ]);
+    ?>
+
+    ЧПУ для пагинации
+    в контроллере где мы создаем экземпляр класаа 
+    $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false]);
+    'forcePageParam' => false, 'pageSizeParam' => false - эти два свойства  отключают 'per-page' в url и убирает с первой страницы Get параметр но на остальных он остается
+    следовательно нам надо пойти в rules 
+
+    'urlManager' => [
+    'enablePrettyUrl' => true,
+    'showScriptName' => false,
+    'rules' => [
+
+    'category/<id:\d+>/page/<page:\d+>' => 'category/view', // Вот это свойство для чпу пагинации
+
+    'category/<id:\d+>' => 'category/view',
+    ],
+    ],
+
+
+    -------------------------------------------------------------------------------------------------------------------------------------
+    обработка ошибок
+    в контролере мы проверям если категории которую мы получаем не существует то мы вернем 404 страницу
+    $category = Category::findOne($id);
+    if (empty($category))
+    throw new \yii\web\HttpException(404, 'Такой категории нет');
+
+
+    в web.php
+    'errorHandler' => [
+    'errorAction' => 'site/error',
+    ],
+    отвечает за вид ошибки
+
+    + мы в этом виде получаем обьеки $exeption который содержит всеб много параметров
+
+
+
+    public function actionView($id) {
+    $id = Yii::$app->request->get('id');
+
+    $category = Category::findOne($id);
+    if (empty($category))
+    throw new \yii\web\HttpException(404, 'Такой категории нет');
+
+    $query = Product::find()->where(['category_id' => $id]);
+    $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false]);
+
+    $products = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+
+    $this->setMeta('E-SHOPPER | ' . $category->name, $category->keywords, $category->description);
+
+    return $this->render('view', compact('products', 'pages', 'category'));
+}row new \yii\web\HttpException(404, 'Такой категории нет');
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Поиск
+Создем форму в которой action <?= \yii\helpers\Url::to(['category/search']) ?> ведет туда где показуется запрос
+и имя которое после укажем в контроллерер
+в HTML мы создаем :
+
+<div class="search_box pull-right">
+    <form method="get" action="<?= \yii\helpers\Url::to(['category/search']) ?>">
+        <input type="text" placeholder="Search" name="q">
+    </form>
+</div>
+
+
+Теперь контроллер:
+$q = trim(Yii::$app->request->get('q')); получаем get из input
+
+
+
+public function actionSearch() {
+$q = trim(Yii::$app->request->get('q'));
+$this->setMeta('E-SHOPPER | Поиск: ' . $q);
+if (!$q)
+return $this->render('search');
+$query = Product::find()->where(['like', 'name', $q]);
+$pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false]);
+$products = $query->offset($pages->offset)->limit($pages->limit)->all();
+return $this->render('search', compact('products', 'pages', 'q'));
+}
+
+____________________________________________________________________________________________________________________________________________________________
+
+Корзина
+
+Первым делом для корзины мы создаем модель,контроллер
+
+
+
+для того что бы корзина работала с помощью AJAX мы заходим в js и создаем скрипт 
+    $('.add-to-cart').on('click', function (e) { / мы вешаем действин на нашу кнопку добавления в корзину скпит аякса
+        e.preventDefault(); / отменяем переход по ссылки
+        var id = $(this).data('id'); / записуем в переменную в виде дата атрибут   <a href="<?= \yii\helpers\Url::to(['cart/add', 'id' => $hit->id]) ?>" data-id="<?= $hit->id ?>" class="btn btn-default add-to-cart">
+        $.ajax({
+            url: '/cart/add', / говорим куда будет вести наш url
+            data: {id: id, _csrf: yii.getCsrfToken()}, / данные которые передаем в наш контроллер, обязательно надо передавать токен
+            type: 'GET', / как данные пойдут на сервер
+            success: function(res){ / приниимаем ответ
+                if(!res) alert('Ошибка!');  // если получаем пустую строку 
+                console.log(res); // получаем ответ (то что выполняет контроллер)
+                //showCart(res);
+            },
+            error: function(){ 
+                alert('Error!');
+            }
+        });
+    });
+
+теперь при клике на ссылку мы будем вызывать аякс запрос который будет передовать данные ид в наш контроллер в контролере
+
+даллее в контроллере
+создем  контроллер
+
+<?php
+
+namespace app\controllers;
+
+use app\models\Product; // наследуем продукты 
+use app\models\Cart;// наследуем модель корзины
+use Yii;
+
+/* Array
+  (
+  [1] => Array
+  (
+  [qty] => QTY
+  [name] => NAME
+  [price] => PRICE
+  [img] => IMG
+  )
+  [10] => Array
+  (
+  [qty] => QTY
+  [name] => NAME
+  [price] => PRICE
+  [img] => IMG
+  )
+  )
+  [qty] => QTY,
+  [sum] => SUM
+  ); */
+
+class CartController extends AppController {
+
+    public function actionAdd() {
+        $id = Yii::$app->request->get('id'); // получаем id через ajax
+        
+        $product = Product::findOne($id); // дальше проверяем на наличие в бд соответствующего ид продукта
+        if (empty($product)) // если продукт не существует ничего не делаем 
+            return false;
+        $session = Yii::$app->session; /помещаем обьект сессии в переменную
+        $session->open(); // открываем сессию
+        $cart = new Cart(); // создаем экземпляр модели  класса Cart
+        $cart->addToCart($product); // и обращаемься к ее методу 
+    }
+
+}
+ После того как мы получаем данные в контроллер и создали модели корзины реализуем метод иодели корзины 
+
+
+
+//Modal widget (модальный виджет  стандратный виджет для yii2 )
+<?php
+\yii\bootstrap\Modal::begin([
+    'header' => '<h2>Корзина</h2>',
+    'id' => 'cart',
+    'size' => 'modal-lg',
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Продолжить покупки</button>
+        <button type="button" class="btn btn-success">Оформить заказ</button>
+        <button type="button" class="btn btn-danger" onclick="clearCart()">Очистить корзину</button>'
+]);
+
+\yii\bootstrap\Modal::end();
+?>
