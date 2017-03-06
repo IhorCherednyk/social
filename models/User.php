@@ -8,9 +8,9 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
 //    попадаем сюда из GetUser() loginForm.php в качестве параметра мы принимае то что ввел пользователь в поле name(login)
-    public static function findByUsername($username) {
+    public static function findByUsername($login) {
         // здесь мы смотрм в базе есть ли у нас пользователь с таким логином если есть возвращем  обьект данных о юзере
-        return User::find()->where(['login'=> $username])->one();
+        return User::find()->where(['login'=> $login])->one();
     }
     
     
@@ -39,7 +39,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function validatePassword($password) {
-       
+        
         return ($this->password == $password) ? true : false;
     }
 

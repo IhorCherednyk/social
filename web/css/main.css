@@ -1,0 +1,16 @@
+.site-login {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.site-login h1 {
+    text-align: center;
+}
+.site-login label.control-label {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
