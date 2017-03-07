@@ -12,14 +12,15 @@ class SignupForm extends Model
     public $email;
     public $name;
     public $sername;
-    public $role = 0;
-    public $status = 0;
-    public $last_login_date = 0;
+    public $password_repeat;
+
 
     public function rules()
     {
         return [
             [['login', 'password','email','name','sername'], 'required'],
+            ['password_repeat', 'required'],
+            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't equal" ],
             [['name','sername'], 'string'],
             [['email'], 'email'],
             [['email'],'unique', 'targetClass'=> 'app\models\User', 'targetAttribute'=>'email'],
@@ -33,13 +34,14 @@ class SignupForm extends Model
         
         if($this->validate()){
            // если валидация успешно то создаем модель юзераипередаем в нее атрибуты которые мы получили из формы
+           $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+           
+           
            $user = new User();
-           $user->attributes = $this->attributes;
-           echo '<pre>';
-           var_dump($user->attributes);
-           var_dump($this->attributes);
-           die;
-           return $user->create();
+         
+           $user->load($this->attributes, '');
+           return $user->save();
         }
     }
 }
+

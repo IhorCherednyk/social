@@ -45,6 +45,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'auth' => 'auth/login',
+                
+               
             ],
         ],
        

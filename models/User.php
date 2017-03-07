@@ -4,6 +4,7 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use Yii;
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -13,25 +14,37 @@ class User extends ActiveRecord implements IdentityInterface
         return User::find()->where(['login'=> $login])->one();
     }
     
+    public function rules()
+    {
+        return [
+            [['login', 'password','email','name','sername',], 'required'],
+            [['name','sername'], 'string'],
+            [['email'], 'email'],
+            [['role', 'status', 'last_login_date'], 'safe'],
+//            [['role', 'status'] , 'integer']
+        ];
+
+    }
+    
     
     public function getAuthKey() {
-        //asdad
+        return $this->auth_key;
+    }
+    
+    public function validateAuthKey($authKey) {
+        return $this->auth_key === $authKey;
     }
 
     public function getId() {
         return $this->id;
     }
-
-    public function validateAuthKey($authKey) {
-        //asd
-    }
-
+    
     public static function findIdentity($id) {
         return User::findOne($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null) {
-        //asd
+        //используется если у нас не потдерживаются сесии
     }
     
     public static function tableName() {
@@ -39,12 +52,15 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function validatePassword($password) {
-        
-        return ($this->password == $password) ? true : false;
+       
+        if (Yii::$app->getSecurity()->validatePassword($password, $this->password)) {
+            return true;
+        }
+        return false;
     }
-    public function create(){
-        
-        return $this->create(false);
+    
+    public function generateAuthKey(){
+        $this->auth_key = \Yii::$app->security->generateRandomString();
     }
 
 }

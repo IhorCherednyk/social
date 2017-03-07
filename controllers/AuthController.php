@@ -50,8 +50,10 @@ class AuthController extends AppController {
     
     
     public function actionSignup(){
+         if (!Yii::$app->user->isGuest) { //Проверяем если пользователь авторизован
+            return $this->redirect(['site/index']); // Отправляем его на домашнюю страницу
+        }
         $model = new SignupForm();
-        
         
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());

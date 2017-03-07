@@ -20,18 +20,18 @@ class m170304_103327_create_user_table extends Migration
             'name' => $this->string(),
             'sername' => $this->string(),
             'role' => $this->boolean(),
-            'status' => $this->boolean(),
+            'auth_key' => $this->string(),
             'last_login_date' => $this->timestamp(),
         ]);
         
         $this->insert('user', [
-            'password' => 'admin',
+            'password' =>  \Yii::$app->getSecurity()->generatePasswordHash('admin'),
             'login' => 'admin',
             'email' => 'am@mail.ru',
             'name' => 'ihor',
             'sername' => 'cc',
             'role' => '1',
-            'status' => '0',
+            'auth_key' => '',
             'last_login_date' => '',
         ]);
     }

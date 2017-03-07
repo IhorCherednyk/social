@@ -7,9 +7,13 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+
 $this->title = 'Login';
 ?>
 <div class="site-login">
+    
+    
+   
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php $form = ActiveForm::begin([
@@ -30,8 +34,11 @@ $this->title = 'Login';
         ]) ?>
 
         <div class="form-group">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            </div>
+            <div class="col-lg-6">
+                <a href="<?= \yii\helpers\Url::to(['auth/signup']) ?>" class="btn btn-primary">Register</a>
             </div>
         </div>
 

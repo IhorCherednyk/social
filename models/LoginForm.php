@@ -61,8 +61,14 @@ class LoginForm extends Model
     {
         if ($this->validate()) { // Здесь мы отправляемся в валидацию rules()
             // Если валидация прошл успешно то далее мы
-            // и так если все прошло хорошо 
+            //записуем в базу нашу куку для авторегистрации
+            if($this->rememberMe){
+                $this->getUser();
+                $this->_user->generateAuthKey();
+                $this->_user->save();
+            }
             return Yii::$app->user->login($this->_user, $this->rememberMe ? 3600*24*30 : 0);
+           
         }
         // Если валидация прошла не успешно мы возвращаем false 
         return false;
