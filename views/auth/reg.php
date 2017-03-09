@@ -21,12 +21,10 @@ $this->title = 'Login';
         ],
     ]); ?>
 
-        <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
         <?= $form->field($model, 'password_repeat')->passwordInput() ?>
         <?= $form->field($model, 'email')->input('email')?> 
-        <?= $form->field($model, 'name')->textInput()?>
-        <?= $form->field($model, 'sername')->textInput()?>
 
 
 

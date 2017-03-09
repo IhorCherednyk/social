@@ -21,7 +21,10 @@ class m170304_114218_create_user_meta_table extends Migration
             'lovely_films' => $this->string(),
             'lovely_book' => $this->string(),
             'avatar_path' => $this->string(),
-            'user_id' => $this->integer()->notNull(),
+            'first_name' => $this->string()->notNull(32),
+            'last_name' => $this->string()->notNull(32),
+            'user_id' => $this->integer(),
+            'birthday' => $this->integer()
         ]);
 
         // creates index for column `user_id`

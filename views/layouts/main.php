@@ -37,15 +37,16 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Reg', 'url' => ['/auth/reg']],
+            ['label' => 'Log', 'url' => ['/auth/login']],
+            ['label' => 'Profile', 'url' => ['/auth/profile']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/auth/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->login . ')',
+                    'Logout (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
@@ -57,6 +58,13 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+        <?php 
+            if(!Yii::$app->user->isGuest):
+                 Html::a(Yii::t('app', 'Log-in'), ['/auth/profile']);
+            endif;
+         ?>     
+            
+        
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

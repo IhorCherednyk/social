@@ -9,8 +9,9 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
-use app\models\SignupForm;
+use app\models\RegForm;
 use app\models\User;
+use app\models\Profile;
 use Yii;
 
 /**
@@ -20,52 +21,52 @@ use Yii;
  */
 class AuthController extends AppController {
 
+    
+
+    public function actionReg() {
+        $model = new RegForm();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()):
+            if ($user = $model->reg()):
+                if ($user->status === User::STATUS_ACTIVE):
+                    if (Yii::$app->getUser()->login($user)):
+                        return $this->goHome();
+                    endif;
+                endif; 
+            else:
+                Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
+                Yii::error('Ошибка при регистрации');
+                return $this->refresh();
+            endif;
+        endif;
+
+        return $this->render(
+            'reg', ['model' => $model]
+        );
+    }
+  
+    
+    
+    
+    
+    
+    
     public function actionLogin() {
-        if (!Yii::$app->user->isGuest) { //Проверяем если пользователь авторизован
-            return $this->redirect(['site/index']); // Отправляем его на домашнюю страницу
-        }
-        // Если пользователь не авторизован создаем модель формы LoginForm
+         if (!Yii::$app->user->isGuest):
+            return $this->goHome();
+        endif;
+        
         $model = new LoginForm();
         
-        // 1.Поскольку в первый раз эта проверка вернет false мы перемещаемся дальше и рендерим нашу форму регистрации строка 36
-        // 2. После того как мы в нашей форме жмем отправить мы опять поподаем сюда
-        //    теперь уже $model->load(Yii::$app->request->post() == true
-        //    и мы запускаем $model->login()
-        //    и мы переходим в LoginForm.php 36 строка
-        
-        
-        // получаем ответ если наша форма не прошла валидацию или не правильно было заполнено мы получаем false и опять показуем форму
-        
-        
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            
             return $this->goBack();
         }
-        
-        // 1.здесь мы создаем форму в нашем виде и отображаем ее
         return $this->render('login', [
             'model' => $model,
         ]);
     }
 
-    
-    
-    public function actionSignup(){
-         if (!Yii::$app->user->isGuest) { //Проверяем если пользователь авторизован
-            return $this->redirect(['site/index']); // Отправляем его на домашнюю страницу
-        }
-        $model = new SignupForm();
-        
-        if(Yii::$app->request->isPost){
-            $model->load(Yii::$app->request->post());
-            if($model->signup()){
-                return $this->redirect(['auth/login']);
-            }
-           
-        }
-        
-        return $this->render('signup', ['model'=>$model]);
-    }
-    
     
     
     
@@ -76,5 +77,25 @@ class AuthController extends AppController {
     }
 
     
+    public function actionProfile()
+    {
+        $model = ($model = Profile::findOne(Yii::$app->user->id)) ? $model : new Profile();
 
+        if($model->load(Yii::$app->request->post()) && $model->validate()):
+            if($model->updateProfile()):
+                Yii::$app->session->setFlash('success', 'Профиль изменен');
+            else:
+                Yii::$app->session->setFlash('error', 'Профиль не изменен');
+                Yii::error('Ошибка записи. Профиль не изменен');
+                return $this->refresh();
+            endif;
+        endif;
+
+        return $this->render(
+            'profile',
+            [
+                'model' => $model
+            ]
+        );
+    }
 }

@@ -25,7 +25,7 @@ $this->title = 'Login';
         ],
     ]); ?>
 
-        <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
