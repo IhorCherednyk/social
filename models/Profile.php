@@ -38,7 +38,7 @@ class Profile extends \yii\db\ActiveRecord
             [['first_name', 'last_name'], 'required'],
             [['user_id', 'birthday'], 'integer'],
             [['hobbies', 'lovely_films', 'lovely_book', 'avatar_path', 'first_name', 'last_name'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            ['avatar_path', 'default', 'value' => 'shablon.jpg',]
         ];
     }
 
@@ -51,12 +51,11 @@ class Profile extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
     
-    public function updateProfile()
+    public function updateProfile($profile,$fileName)
     {
-        $profile = ($profile = Profile::findOne(Yii::$app->user->id)) ? $profile : new Profile(); //если профайл есть редактируем если нет создаем
         $profile->user_id = Yii::$app->user->id;
+        $profile->avatar_path = $fileName ?: $this->avatar_path;
         $profile->setAttributes($this->attributes);
-        
         return $profile->save() ? true : false;
     }
 }

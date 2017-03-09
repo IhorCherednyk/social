@@ -8,14 +8,16 @@ use yii\widgets\ActiveForm;
 /* @var $form ActiveForm */
 ?>
 <div class="auth-profile">
-
-    <?php $form = ActiveForm::begin(); ?>
+    <?= Yii::$app->session->getFlash('success') ?>
+    <?= Yii::$app->session->getFlash('error') ?>
+        <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'first_name') ?>
         <?= $form->field($model, 'last_name') ?>
         <?= $form->field($model, 'hobbies') ?>
         <?= $form->field($model, 'lovely_films') ?>
         <?= $form->field($model, 'lovely_book') ?>
+        <?= $form->field($model, 'avatar_path')->fileInput() ?>
     
         <div class="form-group">
             <?= Html::submitButton('Edit', ['class' => 'btn btn-primary']) ?>

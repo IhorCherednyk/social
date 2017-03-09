@@ -10,8 +10,10 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 ?>
 <div class="site-login">
+    
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?= Yii::$app->session->getFlash('error') ?>
+    
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'layout' => 'horizontal',

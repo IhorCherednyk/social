@@ -27,26 +27,20 @@ class User extends ActiveRecord implements IdentityInterface {
                 ['email', 'unique', 'message' => 'this email already exist.'],
         ];
     }
+
 //    ВОПРОСЫ
 //    1. не показуется setFlash
 //    2. как пофиксить баг с логаутом
 //    СВЯЗИ
-    public function getProfile()
-    {
+    public function getProfile() {
         return $this->hasMany(Profile::className(), ['user_id' => 'id']);
     }
+
     /* Поведения */
 
     public function behaviors() {
         return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at']
-                ],
-                'value' => new Expression('NOW()'),
-            ],
+            TimestampBehavior::className(),
         ];
     }
 
@@ -108,6 +102,5 @@ class User extends ActiveRecord implements IdentityInterface {
     public static function tableName() {
         return 'user';
     }
-    
 
 }
