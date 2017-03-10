@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'hobbies') ?>
         <?= $form->field($model, 'lovely_films') ?>
         <?= $form->field($model, 'lovely_book') ?>
-        <?= $form->field($model, 'avatar_path')->fileInput() ?>
+        <?= $form->field($model, 'file')->fileInput() ?>
     
         <div class="form-group">
             <?= Html::submitButton('Edit', ['class' => 'btn btn-primary']) ?>

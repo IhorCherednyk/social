@@ -8,7 +8,7 @@
 
 namespace app\controllers;
 
-use app\helpers\ImageUpload;
+use app\helpers\ImageHelper;
 use app\models\LoginForm;
 use app\models\Profile;
 use app\models\RegForm;
@@ -23,89 +23,75 @@ use yii\web\UploadedFile;
  */
 class AuthController extends AppController {
 
-    
-
     public function actionReg() {
         $model = new RegForm();
-        Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
-        if ($model->load(Yii::$app->request->post()) && $model->validate()):
-            if ($user = $model->reg()):
-                if ($user->status === User::STATUS_ACTIVE):
-                    if (Yii::$app->getUser()->login($user)):
-                        return $this->reditrect(['auth/profile']);
-                    endif;
-                endif; 
-            else:
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($user = $model->reg()) {
+                if ($user->status === User::STATUS_ACTIVE) {
+                    if (Yii::$app->getUser()->login($user)) {
+                        return $this->redirect(['auth/profile']);
+                    }
+                }
+            } else {
                 Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
                 Yii::error('Ошибка при регистрации');
                 return $this->refresh();
-            endif;
-        endif;
-
+            }
+        }
         return $this->render(
-            'reg', ['model' => $model]
+                        'reg', ['model' => $model]
         );
     }
-  
-    
-    
-    
-    
-    
-    
+
     public function actionLogin() {
-        if (!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        
+
         $model = new LoginForm();
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            
+
             return $this->goHome();
         }
         return $this->render('login', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
-    
-    
-    
     public function actionLogout() {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
-    
-    public function actionProfile()
-    {
-
-         
+    public function actionProfile() {
+        $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
         
-        $model = ($model = Profile::findOne(Yii::$app->user->id)) ? $model : new Profile();
-        
-        if($model->load(Yii::$app->request->post()) && $model->validate()):
+        if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
             
-            $file = UploadedFile::getInstance($model, 'avatar_path');
-        
-            $fileName = ImageUpload::saveImage($file);
-            
-            if($model->updateProfile($model,$fileName)):
-                Yii::$app->session->setFlash('success', 'Профиль изменен');
-            else:
-                Yii::$app->session->setFlash('error', 'Профиль не изменен');
-                Yii::error('Ошибка записи. Профиль не изменен');
-                return $this->refresh();
-            endif;
-        endif;
-
-        return $this->render(
-            'profile',
-            [
-                'model' => $model
-            ]
-        );
+            if ($model->validate()) {
+                
+                // Если пользователь новый то мы сюда не попадем и если картинка не была добавлена мы тоже сюда не попадем
+                
+                if ( null !== $model->avatar_path && file_exists(\Yii::getAlias('@webroot') . $model->avatar_path)) {
+                    unlink(\Yii::getAlias('@webroot') . $model->avatar_path);
+                }
+                
+                $model->file = ImageHelper::saveImage($model);
+                
+                
+                if ($model->updateProfile($model)) {
+                    Yii::$app->session->setFlash('success', 'Профиль изменен');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Профиль не изменен');
+                    Yii::error('Ошибка записи. Профиль не изменен');
+                    return $this->refresh();
+                }
+            }
+           
+        }
+        return $this->render('profile', ['model' => $model]);
     }
+
 }

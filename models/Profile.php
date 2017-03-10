@@ -21,6 +21,7 @@ use Yii;
  */
 class Profile extends \yii\db\ActiveRecord
 {
+    public $file;
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class Profile extends \yii\db\ActiveRecord
             [['first_name', 'last_name'], 'required'],
             [['user_id', 'birthday'], 'integer'],
             [['hobbies', 'lovely_films', 'lovely_book', 'avatar_path', 'first_name', 'last_name'], 'string', 'max' => 255],
-            ['avatar_path', 'default', 'value' => 'shablon.jpg',]
+            [['file'], 'file', 'extensions' => ['png', 'jpg', 'jpeg'], 'skipOnEmpty' => true], 
         ];
     }
 
@@ -51,11 +52,16 @@ class Profile extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
     
-    public function updateProfile($profile,$fileName)
+    
+    public function updateProfile($profile)
     {
         $profile->user_id = Yii::$app->user->id;
-        $profile->avatar_path = $fileName ?: $this->avatar_path;
+        if($profile->file){
+            $profile->avatar_path = $profile->file;
+        }
+        
         $profile->setAttributes($this->attributes);
+       
         return $profile->save() ? true : false;
     }
 }
