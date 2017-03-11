@@ -27,7 +27,7 @@ class AuthController extends AppController {
 
     public function actionReg() {
         $model = new RegForm();
-        Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()):
             if ($user = $model->reg()):
                 if ($user->status === User::STATUS_ACTIVE):
