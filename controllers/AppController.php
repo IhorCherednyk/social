@@ -1,51 +1,56 @@
 <?php
 
 namespace app\controllers;
+
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use app\components\MyBehaviors;
 use Yii;
 
 class AppController extends Controller {
-    
+
     public function behaviors() {
         return [
-            'access' => [  // название поведения
+            'access' => [// название поведения
                 'class' => AccessControl::className(), // фильтры
-                'rules' => [ // список правил 
+                'rules' => [// список правил 
 //                  
-                    [ // первое правило гласит
+                        [// первое правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
-                        'controllers' => ['auth'],//(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['reg','login'],//(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
-                        'matchCallback' => function($rule, $action){
-                              return (\Yii::$app->user->isGuest)? true: Yii::$app->getResponse()->redirect(['/site/index']);
+                        'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'actions' => ['reg', 'login'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
+                        'matchCallback' => function($rule, $action) {
+                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/site/index']);
                         }
                     ],
-                    [ // второе правило гласит
+                        [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
-                        'controllers' => ['auth'],//(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['logout'],//(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
-                        'verbs' => ['POST','GET'],//(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
+                        'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'actions' => ['logout'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
                     ],
-                    [ // первое правило гласит
+                        [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
-                        'controllers' => ['auth'],//(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['profile'],//(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
-                        'verbs' => ['GET','POST'],//(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК GET POST
+                        'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'actions' => ['send-email','setnew-password'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
+                        'roles' => ['?']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
+                    ],
+                        [// первое правило гласит
+                        'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
+                        'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'actions' => ['profile'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
+                        'verbs' => ['GET', 'POST'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК GET POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ГОСТЯМИ
                     ],
-                    [
+                        [
                         'allow' => true,
-                        'actions' => ['index','search']
+                        'actions' => ['index', 'search']
                     ]
-                  
                 ]
             ]
         ];
-
     }
 
-    
 }

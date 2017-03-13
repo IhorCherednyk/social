@@ -12,7 +12,10 @@ use app\helpers\ImageHelper;
 use app\models\LoginForm;
 use app\models\Profile;
 use app\models\RegForm;
+use app\models\Token;
 use app\models\User;
+use app\models\SendEmailForm;
+use app\models\ResetPasswordForm;
 use Yii;
 use yii\web\UploadedFile;
 
@@ -67,18 +70,14 @@ class AuthController extends AppController {
     }
 
     public function actionProfile() {
+
         $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
 
         if ($model->load(Yii::$app->request->post())) {
+
             $model->file = UploadedFile::getInstance($model, 'file');
 
             if ($model->validate()) {
-
-                // Если пользователь новый то мы сюда не попадем и если картинка не была добавлена мы тоже сюда не попадем
-
-                if (null !== $model->avatar_path && file_exists(\Yii::getAlias('@webroot') . $model->avatar_path)) {
-                    unlink(\Yii::getAlias('@webroot') . $model->avatar_path);
-                }
 
                 $model->file = ImageHelper::saveImage($model);
 
@@ -93,6 +92,41 @@ class AuthController extends AppController {
             }
         }
         return $this->render('profile', ['model' => $model]);
+    }
+
+    public function actionSendEmail() {
+        $model = new SendEmailForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'На вашу почту выслано подтверждение изменения пароля');
+            }
+        }
+        return $this->render('send-email', [
+                    'model' => $model,
+        ]);
+    }
+
+    public function actionSetnewPassword($key) {
+        $token = Token::findBySecretKey($key);
+        
+        if ($key && $token->isSecretKeyExpire($token->expire_date)) {
+            
+            $model = new ResetPasswordForm();
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if($model->resetPassword($token->user_id,$token)){
+                    
+                }
+            }
+            return $this->render('setnew-password', [
+                        'model' => $model,
+            ]);
+            
+        }else{
+           Yii::$app->session->setFlash('warn', 'Либо неверно указан ключи или срок ссылки на изменение пароля истек, отправьте новй запрос на востановление пароля'); 
+           return $this->redirect(['auth/send-email']);
+        }
     }
 
 }

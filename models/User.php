@@ -35,7 +35,11 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getProfile() {
         return $this->hasMany(Profile::className(), ['user_id' => 'id']);
     }
-
+    public function getToken()
+    {
+        return $this->hasMany(Token::className(), ['user_id' => 'id']);
+    }
+    
     /* Поведения */
 
     public function behaviors() {
@@ -72,7 +76,11 @@ class User extends ActiveRecord implements IdentityInterface {
                     'username' => $username
         ]);
     }
-
+    public static function findById($id) {
+        return static::findOne([
+                    'id' => $id
+        ]);
+    }
 // IdentityInterface
 
 

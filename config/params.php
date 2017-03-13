@@ -2,5 +2,7 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-    'emailActivation' => true
+    'supportEmail' => 'no-reply@phpnt.com',
+    'secretKeyExpire' => 60*60*2,
+    
 ];

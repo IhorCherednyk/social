@@ -39,7 +39,10 @@ $this->title = 'Login';
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
             <div class="col-lg-6">
-                <a href="<?= \yii\helpers\Url::to(['auth/signup']) ?>" class="btn btn-primary">Register</a>
+                <a href="<?= \yii\helpers\Url::to(['auth/login']) ?>" class="btn btn-primary">Register</a>
+            </div>
+            <div class="col-lg-6">
+                <?= Html::a('Забыли пароль?', ['/auth/send-email']) ?>
             </div>
         </div>
 

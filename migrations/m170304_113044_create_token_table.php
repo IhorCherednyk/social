@@ -17,11 +17,9 @@ class m170304_113044_create_token_table extends Migration
     {
         $this->createTable('token', [
             'id' => $this->primaryKey(),
-            'code' => $this->char(),
+            'secret_key' => $this->string(32)->notNull(),
             'user_id' => $this->integer()->notNull(),
-            'date' => $this->timestamp(),
-            'type' => $this->integer(),
-            'expire_date' => $this->date(),
+            'expire_date' => $this->integer()->notNull(),
         ]);
         
         // creates index for column `user_id`
