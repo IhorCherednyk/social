@@ -37,9 +37,11 @@ class SendEmailForm extends Model
 
         if($user){
             $token = ($token = Token::findOne(['user_id' => $user->id])) ? $token : new Token();
+            
             $token->generateSecretKey();
             $token->user_id = $user->id;
             if($token->save()){
+                
                 return Yii::$app->mailer->compose('resetPassword', ['token' => $token, 'user' => $user])
                     ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
                     ->setTo($this->email)

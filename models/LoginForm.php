@@ -27,24 +27,27 @@ class LoginForm extends Model {
             $this->getUser();
             if (is_null($this->_user) || !$this->_user->validatePassword($this->password)):
                 $this->addError($attribute, 'Неправильный логин или пароль.');
+            
             endif;
         endif;
     }
 
     public function login() {
-        if ($this->validate()):
-            $this->status = ($this->_user) ? $this->_user->status : User::STATUS_NOT_ACTIVE;
-            if ($this->status === User::STATUS_ACTIVE):
+        
+        if ($this->validate()){
+            if ($this->_user->status === User::STATUS_ACTIVE){
                 return Yii::$app->user->login($this->_user, $this->rememberMe ? 3600 * 24 * 30 : 0);
-            endif;
-        endif;
+            }
+        }
         return false;
     }
 
     public function getUser() {
+          
         if (is_null($this->_user)):
             $this->_user = User::findByUsername($this->username);
         endif;
+        
         return $this->_user;
     }
 

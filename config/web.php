@@ -48,11 +48,11 @@ $config = [
         ],
        
     ],
-    'modules' => [
-        'user' => [
-            'class' => 'app\modules\user\Module',
-        ],
-    ],
+//    'modules' => [
+//        'user' => [
+//            'class' => 'app\modules\user\Module',
+//        ],
+//    ],
     'params' => $params,
 ];
 

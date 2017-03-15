@@ -16,7 +16,11 @@ $this->title = 'Login';
     
    
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?php
+    if (Yii::$app->session->getFlash('error')) {
+        echo Yii::$app->session->getFlash('error');
+    }
+    ?>
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'layout' => 'horizontal',

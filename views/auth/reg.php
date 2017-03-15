@@ -12,7 +12,14 @@ $this->title = 'Login';
 <div class="site-login">
     
     <h1><?= Html::encode($this->title) ?></h1>
-    <?= Yii::$app->session->getFlash('error') ?>
+    <?php 
+        if(Yii::$app->session->getFlash('confirm-email')){
+            echo Yii::$app->session->getFlash('confirm-email');
+        }
+        if(Yii::$app->session->getFlash('error')){
+           echo Yii::$app->session->getFlash('error');
+        }
+    ?>
     
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',

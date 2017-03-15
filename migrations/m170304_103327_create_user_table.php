@@ -23,6 +23,7 @@ class m170304_103327_create_user_table extends Migration
             'updated_at' => $this->integer()->notNull(),
             'role' => $this->integer(),
             'last_login_date' => $this->integer()->notNull(),
+            'email_activation_key' =>$this->string()->notNull()
         ]);
         
     }

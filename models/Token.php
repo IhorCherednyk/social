@@ -68,10 +68,5 @@ class Token extends \yii\db\ActiveRecord
         $this->expire_date = time() + Yii::$app->params['secretKeyExpire']; 
     }
 
-    public function removeTokenField($key)
-    {
-        $token = self::findOne($key);
-        $token->delete();
 
-    }
 }

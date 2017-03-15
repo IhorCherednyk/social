@@ -30,12 +30,10 @@ class AuthController extends AppController {
         $model = new RegForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($user = $model->reg()) {
-                if ($user->status === User::STATUS_ACTIVE) {
-                    if (Yii::$app->getUser()->login($user)) {
-                        return $this->redirect(['auth/profile']);
-                    }
-                }
+            $user = $model->reg();
+            if ($user && $model->sendEmail($user)) {
+                Yii::$app->session->setFlash('confirm-email', 'На ваш email отправлено письмо для подтверждения email');
+                return $this->goHome();
             } else {
 
                 Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
@@ -48,6 +46,37 @@ class AuthController extends AppController {
         );
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    public function actionActivateEmail($key) {
+        $user = User::findByEmailKey($key);
+        
+        if ($user) {
+            
+            $user->status = User::STATUS_ACTIVE;
+            $user->save();
+            if (Yii::$app->getUser()->login($user)) {
+                return $this->redirect(['auth/profile']);
+            }
+        }
+        Yii::$app->session->setFlash('error', 'Возникла ошибка при подтверждении пароля попробуйте зарегистрироваться заново');
+        
+        return redirect(['auth/reg']);
+    }
+
+    
+    
+    
+    
+    
+    
+    
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -55,20 +84,37 @@ class AuthController extends AppController {
 
         $model = new LoginForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post())) {
+            
+            if($model->login()){
+               
+                return $this->goHome();
+            }else{
+               
+              Yii::$app->session->setFlash('error', 'Возможно вы не активировали свой email'); 
+              return $this->refresh();
+            }
+            
         }
         return $this->render('login', [
                     'model' => $model,
         ]);
     }
 
+    
+    
+
+    
     public function actionLogout() {
         Yii::$app->user->logout();
         return $this->goHome();
     }
 
+    
+    
+    
+    
+    
     public function actionProfile() {
 
         $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
@@ -110,22 +156,21 @@ class AuthController extends AppController {
 
     public function actionSetnewPassword($key) {
         $token = Token::findBySecretKey($key);
-        
-        if ($key && $token->isSecretKeyExpire($token->expire_date)) {
-            
+
+        if ($token && $token->isSecretKeyExpire($token->expire_date)) {
+
             $model = new ResetPasswordForm();
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                if($model->resetPassword($token->user_id,$token)){
+                if ($model->resetPassword($token)) {
                     
                 }
             }
             return $this->render('setnew-password', [
                         'model' => $model,
             ]);
-            
-        }else{
-           Yii::$app->session->setFlash('warn', 'Либо неверно указан ключи или срок ссылки на изменение пароля истек, отправьте новй запрос на востановление пароля'); 
-           return $this->redirect(['auth/send-email']);
+        } else {
+            Yii::$app->session->setFlash('warn', 'Либо неверно указан ключи или срок ссылки на изменение пароля истек, отправьте новй запрос на востановление пароля');
+            return $this->redirect(['auth/send-email']);
         }
     }
 

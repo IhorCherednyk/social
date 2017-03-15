@@ -33,11 +33,11 @@ class User extends ActiveRecord implements IdentityInterface {
 //    2. как пофиксить баг с логаутом
 //    СВЯЗИ
     public function getProfile() {
-        return $this->hasMany(Profile::className(), ['user_id' => 'id']);
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
     public function getToken()
     {
-        return $this->hasMany(Token::className(), ['user_id' => 'id']);
+        return $this->hasOne(Token::className(), ['user_id' => 'id']);
     }
     
     /* Поведения */
@@ -55,6 +55,9 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public function generateAuthKey() {
         $this->auth_key = \Yii::$app->security->generateRandomString();
+    }
+    public function generateEmailActivationKey() {
+        $this->email_activation_key = \Yii::$app->security->generateRandomString($length = 6);
     }
 
     public function validatePassword($password) {
@@ -79,6 +82,12 @@ class User extends ActiveRecord implements IdentityInterface {
     public static function findById($id) {
         return static::findOne([
                     'id' => $id
+        ]);
+    }
+    public static function findByEmailKey($key)
+    {
+        return static::findOne([
+            'email_activation_key' => $key,
         ]);
     }
 // IdentityInterface
