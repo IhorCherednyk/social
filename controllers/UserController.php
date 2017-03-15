@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 use app\models\User;
+use yii\data\ActiveDataProvider;
 use Yii;
 
 /**
