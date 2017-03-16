@@ -12,50 +12,35 @@ use yii\filters\VerbFilter;
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
-{
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+class UserController extends Controller {
 
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
-    public function actionIndex($username = null)
-    {
-        if($username){
-            $model = User::findOne(['username' => $username]);
+
+    public function actionIndex($username = null) {
+        
+        if(is_null($username)){
+            $user = Yii::$app->user->identity;
             $searchModel = new UserSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+            $dataProvider = $searchModel->search(Yii::$app->request->post());
+            if (\Yii::$app->request->isAjax) {
+                return $this->renderPartial('index', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'user' => $user
+                ]);
+            }
             return $this->render('index', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
-                        'model' => $model
+                        'user' => $user
             ]);
         }else {
-            $searchModel = new UserSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+          $user = User::findByUsername($username);
+          
+          return $this->render('index', [
+                        'user' => $user
             ]);
         }
         
     }
-
 
 }

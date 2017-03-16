@@ -43,6 +43,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'auth' => 'auth/login',
+                '/user/index/<key:.+>' => '/user/index'
                
             ],
         ],

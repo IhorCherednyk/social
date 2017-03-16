@@ -18,7 +18,6 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at', 'role', 'last_login_date'], 'integer'],
             [['username', 'email', 'password_hash', 'auth_key', 'email_activation_key'], 'safe'],
         ];
     }
@@ -41,8 +40,10 @@ class UserSearch extends User
      */
     public function search($params)
     {
+//        D($params);
         $query = User::find();
-
+        
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -50,6 +51,9 @@ class UserSearch extends User
         ]);
 
         $this->load($params);
+        
+//        $query->where(['!=','username', $this->username]);
+//        $query->andWhere(['!=','id', \Yii::$app->user->id]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
