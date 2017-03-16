@@ -25,7 +25,24 @@ use yii\web\UploadedFile;
  * @author Anastasiya
  */
 class AuthController extends AppController {
+    
+    public function actionUserHome($id = null) {
 
+        if (is_null($id)) {
+            $currentUser = Yii::$app->user->identity;
+            $users = User::find()->where(['!=', 'id', Yii::$app->user->id])->all();
+        }
+
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('user-home', [
+                    'listDataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'users' => $users,
+                    'currentUser' => $currentUser,   
+        ]);
+    }
     public function actionReg() {
         $model = new RegForm();
 
