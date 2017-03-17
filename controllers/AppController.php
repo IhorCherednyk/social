@@ -33,7 +33,7 @@ class AppController extends Controller {
                         [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['user'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['user-home'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'actions' => ['index'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
                         'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
                     ],

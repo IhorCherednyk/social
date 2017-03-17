@@ -40,7 +40,6 @@ class UserSearch extends User
      */
     public function search($params)
     {
-//        D($params);
         $query = User::find();
         
         
@@ -49,7 +48,7 @@ class UserSearch extends User
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        
         $this->load($params);
         
 //        $query->where(['!=','username', $this->username]);
