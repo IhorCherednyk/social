@@ -8,7 +8,7 @@ use yii\helpers\Html;
 ?>
 
     <div class="user-name">
-        <?= $model->username ?>
+        <?= Html::a($model->username, ['/user/index', 'username' => $model->username], ['data-pjax' => true]) ?>
     </div>
 
 

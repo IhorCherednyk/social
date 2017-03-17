@@ -8,16 +8,32 @@ use yii\widgets\Pjax;
 
 
 <div class="row">
+    <div class="col-md-6">
+        <div class="user-img">
+            <?php if (isset($user->profile->avatar_path)): ?>
+                <?= Html::img($user->profile->avatar_path) ?>
+            <?php endif; ?>
+        </div>
+        <div class="user-info">
+            <?php if (isset($user->profile->first_name)): ?>
+                <?= Html::tag('h1', $user->profile->first_name); ?>
+            <?php endif; ?>
 
+            <?php if (isset($user->profile->last_name)): ?>
+                <?= Html::tag('h1', $user->profile->last_name); ?>
+
+            <?php endif; ?>
+        </div>
+    </div>
     <div class="col-md-6">
         <div class="user-index">
 
-            <?php Pjax::begin();?>    
+            <?php Pjax::begin(); ?>    
             <?php
-                $form = ActiveForm::begin(['options' => ['data-pjax' => true],'method' => 'post']);
+            $form = ActiveForm::begin(['options' => ['data-pjax' => ''], 'method' => 'post']);
             ?>
             <?= $form->field($searchModel, 'username'); ?>
-                <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
             <?php ActiveForm::end(); ?>
 
             <?=
@@ -25,10 +41,16 @@ use yii\widgets\Pjax;
                 'id' => 'list',
                 'dataProvider' => $dataProvider,
                 'itemOptions' => ['class' => 'item'],
-                'itemView' => '_view'
+                'itemView' => '_view',
+                'options' => [
+                    'tag' => 'div',
+                    'class' => 'news-list',
+                    'id' => 'news-list',
+                ],
+                'layout' => "{summary}\n{items}\n{pager}",
             ]);
             ?>
-            <?php Pjax::end();?>     
+            <?php Pjax::end(); ?>     
         </div>
     </div>
 

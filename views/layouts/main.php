@@ -9,6 +9,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\Menu;
 
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -23,7 +24,6 @@ AppAsset::register($this);
     </head>
     <body>
         <?php $this->beginBody() ?>
-
         <div class="wrap">
 
             <nav class=" navbar-inverse navbar-right navbar-fixed-top navbar">
@@ -37,11 +37,12 @@ AppAsset::register($this);
                         'items' => [
                                 [
                                 'label' => Yii::t('app', 'Home'),
-                                'url' => ['/site/index'],
+                                'url' => ['/user/index','username' => (isset(\Yii::$app->user->identity->username))? \Yii::$app->user->identity->username :null],
+                                'visible' => !\Yii::$app->user->isGuest
                             ],
                                 [
                                 'label' => Yii::t('app', 'Register'),
-                                'url' => ['/auth/reg', 'slug' => 'rules'],
+                                'url' => ['/auth/reg'],
                                 'visible' => \Yii::$app->user->isGuest
                             ],
                                 [

@@ -39,6 +39,16 @@ class User extends ActiveRecord implements IdentityInterface {
     {
         return $this->hasOne(Token::className(), ['user_id' => 'id']);
     }
+
+    public function getMessages()
+    {
+        return $this->hasMany(Message::className(), ['recipient_id' => 'id']);
+    }
+
+    public function getMessagesSender()
+    {
+        return $this->hasMany(Message::className(), ['sender_id' => 'id']);
+    }
     
     /* Поведения */
 

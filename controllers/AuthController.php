@@ -59,7 +59,7 @@ class AuthController extends AppController {
             }
         }
         return $this->render(
-                        'reg', ['model' => $model]
+            'reg', ['model' => $model]
         );
     }
 
@@ -96,7 +96,7 @@ class AuthController extends AppController {
     
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['user/index']);
         }
 
         $model = new LoginForm();
@@ -105,7 +105,7 @@ class AuthController extends AppController {
             
             if($model->login()){
                
-                return $this->goHome();
+                return $this->redirect(['auth/profile']);
             }else{
                
               Yii::$app->session->setFlash('error', 'Возможно вы не активировали свой email'); 
@@ -124,7 +124,7 @@ class AuthController extends AppController {
     
     public function actionLogout() {
         Yii::$app->user->logout();
-        return $this->goHome();
+        return $this->redirect(['auth/login']);
     }
 
     

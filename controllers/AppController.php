@@ -20,7 +20,7 @@ class AppController extends Controller {
                         'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'actions' => ['reg', 'login'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
                         'matchCallback' => function($rule, $action) {
-                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/site/index']);
+                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/auth/profile']);
                         }
                     ],
                         [// второе правило гласит
@@ -39,8 +39,15 @@ class AppController extends Controller {
                     ],
                         [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
+                        'controllers' => ['user-messages'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'actions' => ['index'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
+                        'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
+                    ],
+                        [// второе правило гласит
+                        'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['send-email','setnew-password','activate-email'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'actions' => ['send-email', 'setnew-password', 'activate-email'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
                         'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
                         'roles' => ['?']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
                     ],
@@ -50,10 +57,6 @@ class AppController extends Controller {
                         'actions' => ['profile'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
                         'verbs' => ['GET', 'POST'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК GET POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ГОСТЯМИ
-                    ],
-                        [
-                        'allow' => true,
-                        'actions' => ['index', 'search']
                     ]
                 ]
             ]
