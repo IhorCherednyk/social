@@ -1,25 +1,61 @@
 <?php
-
 use yii\helpers\Html;
+use yii\widgets\ListView;
 use yii\widgets\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Message */
-/* @var $form ActiveForm */
+use yii\widgets\Pjax;
+use app\models\Message;
 ?>
-<div class="user-messages-index">
 
-    <?php $form = ActiveForm::begin(); ?>
+<style>
+    .news-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .news-list li {
+        padding: 5px;
+        border: 1px solid #000;
+        margin-bottom: 1px;
+    }
+</style>
+<div class="row">
+    <h1>Сообщения</h1>
+    <?= Html::a('Входящие', ['/user-messages/incoming-message'], ['class' => 'btn btn-success']); ?>
+    <?= Html::a('Исходящие', ['/user-messages/outgoing-message'], ['class' => 'btn btn-success']); ?>
+    <div class="col-md-6">
+        <div class="user-index">
 
-        <?= $form->field($model, 'text') ?>
-        <?= $form->field($model, 'status') ?>
-        <?= $form->field($model, 'sender_id') ?>
-        <?= $form->field($model, 'recipient_id') ?>
-        <?= $form->field($model, 'date_created') ?>
-    
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+            <?php Pjax::begin(); ?>    
+            <?php
+            
+            $form = ActiveForm::begin(['options' => ['data-pjax' => ''], 'method' => 'post']);
+            ?>
+            <?= $form->field($searchModel, 'text') ?>
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+
+            <?=
+            ListView::widget([
+            'id' => 'list',
+            'dataProvider' => $dataProvider,
+            'itemOptions' => ['class' => 'item', 'tag' => 'li'],
+            'itemView' => function ($model, $key, $incomingMessage, $widget) {
+                    return $this->render('_view', [
+                        'model' => $model,
+                        'incomingMessage' => $incomingMessage,
+                    ]);
+            },
+            'options' => [
+            'tag' => 'ul',
+            'class' => 'news-list',
+            'id' => 'news-list',
+            ],
+            'layout' => "{summary}\n{items}\n{pager}",
+            ]);
+            ?>
+            <?php Pjax::end(); ?>     
         </div>
-    <?php ActiveForm::end(); ?>
+    </div>
 
-</div><!-- user-messages-index -->
+
+</div>

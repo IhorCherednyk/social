@@ -20,7 +20,8 @@ class m170304_113925_create_message_table extends Migration
             'id' => $this->primaryKey(),
             'text' => $this->text(),
             'status' => $this->boolean(),
-            'date_created' => $this->timestamp(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
             'sender_id' => $this->integer()->notNull(),
             'recipient_id' => $this->integer()->notNull(),
         ]);

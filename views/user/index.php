@@ -24,7 +24,17 @@ use yii\widgets\Pjax;
 
             <?php endif; ?>
         </div>
+        <div class="message">
+            <?php
+            if ($user->id == Yii::$app->user->id) {
+                echo Html::a('Мои сообщения', ['/user-messages/incoming-message'],['class' => 'btn btn-success']);
+            } else {
+                echo Html::a('Написать сообщение', ['/user-messages/write-message', 'recipientid' => $user->id],['class' => 'btn btn-success']);
+            }
+            ?>
+        </div>    
     </div>
+
     <div class="col-md-6">
         <div class="user-index">
 

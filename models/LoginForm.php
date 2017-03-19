@@ -25,9 +25,9 @@ class LoginForm extends Model {
     public function validatePassword($attribute) {
         if (!$this->hasErrors()):
             $this->getUser();
+           
             if (is_null($this->_user) || !$this->_user->validatePassword($this->password)):
                 $this->addError($attribute, 'Неправильный логин или пароль.');
-            
             endif;
         endif;
     }
