@@ -39,6 +39,7 @@ class RegForm extends Model {
         $user->generateAuthKey();
         $user->generateEmailActivationKey();
         $user->setAttributes($this->attributes);
+        $user->role = User::IS_USER;
         if($user->save()){
             $profile = new Profile();
             $profile->setAttributes($this->attributes);

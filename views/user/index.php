@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
+use app\models\Message;
 ?>
 
 
@@ -24,12 +25,18 @@ use yii\widgets\Pjax;
 
             <?php endif; ?>
         </div>
+        
         <div class="message">
             <?php
             if ($user->id == Yii::$app->user->id) {
-                echo Html::a('Мои сообщения', ['/user-messages/incoming-message'],['class' => 'btn btn-success']);
+                $query = Message::find();
+                $count = $query->where(['status' => Message::STATUS_UNREADED])
+                        ->andWhere(['recipient_id' => Yii::$app->user->id])
+                        ->count();
+                echo Html::a('Мои сообщения', ['/user-messages/incoming-message'], ['class' => 'btn btn-success']);
+                echo Html::a($count,['/user-messages/incoming-message'],['class' => 'btn btn-primary']);
             } else {
-                echo Html::a('Написать сообщение', ['/user-messages/write-message', 'recipientid' => $user->id],['class' => 'btn btn-success']);
+                echo Html::a('Написать сообщение', ['/user-messages/write-message', 'recipientid' => $user->id], ['class' => 'btn btn-success']);
             }
             ?>
         </div>    

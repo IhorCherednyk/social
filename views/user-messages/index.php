@@ -17,6 +17,19 @@ use app\models\Message;
         border: 1px solid #000;
         margin-bottom: 1px;
     }
+    .message-sender {
+        float:right;
+    }
+    .item {
+        overflow: hidden;
+    }
+    .message-action {
+        display: block;
+        overflow: hidden;
+    }
+    .message-action.not-readed{
+        background-color: #eee;
+    }
 </style>
 <div class="row">
     <h1>Сообщения</h1>
@@ -30,7 +43,7 @@ use app\models\Message;
             
             $form = ActiveForm::begin(['options' => ['data-pjax' => ''], 'method' => 'post']);
             ?>
-            <?= $form->field($searchModel, 'text') ?>
+            <?= $form->field($searchModel, 'username') ?>
             <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
             <?php ActiveForm::end(); ?>
 
@@ -39,10 +52,9 @@ use app\models\Message;
             'id' => 'list',
             'dataProvider' => $dataProvider,
             'itemOptions' => ['class' => 'item', 'tag' => 'li'],
-            'itemView' => function ($model, $key, $incomingMessage, $widget) {
+            'itemView' => function ($model, $key, $index, $widget) {
                     return $this->render('_view', [
                         'model' => $model,
-                        'incomingMessage' => $incomingMessage,
                     ]);
             },
             'options' => [

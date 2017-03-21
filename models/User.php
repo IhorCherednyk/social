@@ -13,6 +13,8 @@ class User extends ActiveRecord implements IdentityInterface {
     const STATUS_DELETED = 0;
     const STATUS_NOT_ACTIVE = 1;
     const STATUS_ACTIVE = 10;
+    const IS_ADMIN = 2;
+    const IS_USER = 3;
 
     public $password;
 
@@ -95,6 +97,7 @@ class User extends ActiveRecord implements IdentityInterface {
                     'id' => $id
         ]);
     }
+
     public static function findByEmailKey($key)
     {
         return static::findOne([

@@ -19,8 +19,15 @@ class AppController extends Controller {
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'actions' => ['reg', 'login'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
+//                        'matchCallback' => function($rule, $action) {
+//                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/auth/profile']);
+//                        }
+                    ],
+                    [// первое правило гласит
+                        'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
+                        'controllers' => ['admin/admin'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'matchCallback' => function($rule, $action) {
-                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/auth/profile']);
+                            return (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::IS_ADMIN) ? true : false;
                         }
                     ],
                         [// второе правило гласит
@@ -40,14 +47,7 @@ class AppController extends Controller {
                         [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['user-messages'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['write-message'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
-                        'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
-                        'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
-                    ],
-                        [// второе правило гласит
-                        'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
-                        'controllers' => ['user-messages'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['incoming-message','outgoing-message'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'actions' => ['incoming-message','outgoing-message','read-message','write-message'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
                         'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
                     ],

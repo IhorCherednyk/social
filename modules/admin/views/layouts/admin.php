@@ -19,7 +19,7 @@ AppAsset::register($this);
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
+        <title>Админка | <?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
     <body>
@@ -35,11 +35,6 @@ AppAsset::register($this);
                         ],
                         'encodeLabels' => false,
                         'items' => [
-                            [
-                                'label' => Yii::t('app', 'Admin'),
-                                'url' => ['/admin/admin/index'],
-                                'visible' => (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::IS_ADMIN)
-                            ],
                                 [
                                 'label' => Yii::t('app', 'Home'),
                                 'url' => ['/user/index','username' => (isset(\Yii::$app->user->identity->username))? \Yii::$app->user->identity->username :null],

@@ -51,9 +51,9 @@ class UserSearch extends User {
         ]);
 
         $this->load($params);
-        $query->where(['!=', 'id', \Yii::$app->user->id])->andWhere(['!=', 'id', $user->id])->andWhere(['=', 'status', User::STATUS_ACTIVE]);
-//        $query->andWhere(['!=','id', $user->id]);
-//        $query->andWhere(['=','status', User::STATUS_ACTIVE]);
+        $query->where(['!=', 'id', \Yii::$app->user->id])->andWhere(['!=', 'id', $user->id])->andWhere(['=', 'status', User::STATUS_ACTIVE])
+                ->andWhere(['!=', 'role', User::IS_ADMIN]);
+//        D($query->createCommand()->getSql());
 
 
         if (!$this->validate()) {

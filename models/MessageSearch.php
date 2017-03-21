@@ -12,14 +12,17 @@ use app\models\Message;
  */
 class MessageSearch extends Message
 {
+    public $type;
+    public $username;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at', 'sender_id', 'recipient_id'], 'integer'],
-            [['text'], 'safe'],
+            [['id', 'status', 'created_at', 'updated_at', 'sender_id', 'recipient_id','type'], 'integer'],
+            [['text','username'], 'safe'],
         ];
     }
 
@@ -39,26 +42,31 @@ class MessageSearch extends Message
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$incomingMessage)
+    public function search($params)
     {
+        
         $query = Message::find();
-
+        
         // add conditions that should always apply here
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
-        if($incomingMessage == Message::MESSAGE_INCOMING){
+        
+        if($this->type == Message::MESSAGE_INCOMING){
             $query->where(['=', 'recipient_id', Yii::$app->user->id]);
+            $query->joinWith('sender');
         }else {
-           
-            $query->where(['=', 'sender_id', Yii::$app->user->id]); 
+            $query->where(['=', 'sender_id', Yii::$app->user->id]);
+            $query->joinWith('recipient');
         }
+        
+         
         if (!$this->validate()) {
             return $dataProvider;
         }
+        
         
         
         // grid filtering conditions
@@ -69,11 +77,12 @@ class MessageSearch extends Message
             'updated_at' => $this->updated_at,
             'sender_id' => $this->sender_id,
             'recipient_id' => $this->recipient_id,
+            'text' => $this->text
         ]);
+//        D($query->createCommand()->getSql());
+       
+        $query->andFilterWhere(['like', 'username', $this->username]);
 //        D($query->createCommand()->sql);
-//        D($this);
-        $query->andFilterWhere(['like', 'text', $this->text]);
-        
         return $dataProvider;
     }
 }

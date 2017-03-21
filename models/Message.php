@@ -13,7 +13,6 @@ class Message extends \yii\db\ActiveRecord {
     const MESSAGE_INCOMING = 2;
     const MESSAGE_OUTCOMING = 3;
     
-    
     /**
      * @inheritdoc
      */
@@ -53,6 +52,11 @@ class Message extends \yii\db\ActiveRecord {
             TimestampBehavior::className(),
         ];
     }
-
+    
+    public static function findById($id) {
+        return static::findOne([
+                    'id' => $id
+        ]);
+    }
 
 }

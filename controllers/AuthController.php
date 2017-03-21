@@ -26,27 +26,34 @@ use yii\web\UploadedFile;
  */
 class AuthController extends AppController {
     
-    public function actionUserHome($id = null) {
-
-        if (is_null($id)) {
-            $currentUser = Yii::$app->user->identity;
-            $users = User::find()->where(['!=', 'id', Yii::$app->user->id])->all();
+//    public function actionUserHome($id = null) {
+//
+//        if (is_null($id)) {
+//            $currentUser = Yii::$app->user->identity;
+//            $users = User::find()->where(['!=', 'id', Yii::$app->user->id])->all();
+//        }
+//
+//        $searchModel = new UserSearch();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//
+//        return $this->render('user-home', [
+//                    'listDataProvider' => $dataProvider,
+//                    'searchModel' => $searchModel,
+//                    'users' => $users,
+//                    'currentUser' => $currentUser,   
+//        ]);
+//    }
+    public function actionReg() {
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
+            return $this->redirect(['user/index', 'username' => Yii::$app->user->identity->username]);
+        } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN) {
+            return $this->redirect(['/admin/admin/index']);
         }
 
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('user-home', [
-                    'listDataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                    'users' => $users,
-                    'currentUser' => $currentUser,   
-        ]);
-    }
-    public function actionReg() {
         $model = new RegForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            
             $user = $model->reg();
             if ($user && $model->sendEmail($user)) {
                 Yii::$app->session->setFlash('confirm-email', 'На ваш email отправлено письмо для подтверждения email');
@@ -58,6 +65,7 @@ class AuthController extends AppController {
                 return $this->refresh();
             }
         }
+        
         return $this->render(
             'reg', ['model' => $model]
         );
@@ -95,8 +103,10 @@ class AuthController extends AppController {
     
     
     public function actionLogin() {
-        if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['user/index']);
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
+            return $this->redirect(['user/index','username'=> Yii::$app->user->identity->username]);
+        }elseif(!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN){
+            return $this->redirect(['/admin/admin/index']);
         }
 
         $model = new LoginForm();
@@ -104,8 +114,11 @@ class AuthController extends AppController {
         if ($model->load(Yii::$app->request->post())) {
             
             if($model->login()){
-               
-                return $this->redirect(['auth/profile']);
+                if($model->user->role == User::IS_ADMIN){
+                    return $this->redirect(['/admin/admin/index']);
+                }else{
+                    return $this->redirect(['user/index', 'username'=> Yii::$app->user->identity->username]);
+                }
             }else{
                
               Yii::$app->session->setFlash('error', 'Возможно вы не активировали свой email'); 
@@ -133,7 +146,6 @@ class AuthController extends AppController {
     
     
     public function actionProfile() {
-
         $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
 
         if ($model->load(Yii::$app->request->post())) {

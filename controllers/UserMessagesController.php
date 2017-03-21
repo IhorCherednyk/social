@@ -9,10 +9,7 @@ use Yii;
 
 class UserMessagesController extends AppController {
 
-//    1. Если я хочу отображать пользователя в listview который отправляет или которому отправленно по ситации куда мне его передавать
-//    могу ли я сделать запрос к базе в самом listview или как мне его туда передать (могу ли я в index.php из модели  передаваемой в _view
-//    зделать запрос к базе)
-//    2. Правильно ли я юзаю констануту для отображения сообщений
+
 //    3. Смена статуса письма: могу ли я создать новый action который будет открывать письмо
 //           в _view делать проверку по $model его статус и в заисимости от статуса гинерить разные ссылки
 //           если сообщение прочитано ссылка  просто вести на action если нет то ссылка будет содержать
@@ -20,25 +17,25 @@ class UserMessagesController extends AppController {
     
     public function actionIncomingMessage() {
 //        здесь надо получать sender_id
-        $incomingMessage = Message::MESSAGE_INCOMING;
         $searchModel = new MessageSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->post(),$incomingMessage);
+        $searchModel->type = Message::MESSAGE_INCOMING;
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
-                    'incomingMessage' => $incomingMessage
+                    
         ]);
     }
     public function actionOutgoingMessage() {
 //        здесь надо получать recipient_id
-        $incomingMessage = Message::MESSAGE_OUTCOMING;
         $searchModel = new MessageSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->post(),$incomingMessage);
+        $searchModel->type = Message::MESSAGE_OUTCOMING;
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
-                    'incomingMessage' => $incomingMessage
+                    
         ]);
     }
 
@@ -56,6 +53,21 @@ class UserMessagesController extends AppController {
         }
 
         return $this->render('write-message', [
+                    'model' => $model,
+        ]);
+    }
+    
+    public function actionReadMessage($id){
+        $model = Message::findById($id);
+        
+        if($model->status == Message::STATUS_UNREADED){
+           $model->status =  Message::STATUS_READED;
+           if(!$model->save()){
+               return false;
+           }
+           
+        }
+        return $this->render('read-message', [
                     'model' => $model,
         ]);
     }
