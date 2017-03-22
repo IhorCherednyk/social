@@ -26,28 +26,12 @@ use yii\web\UploadedFile;
  */
 class AuthController extends AppController {
     
-//    public function actionUserHome($id = null) {
-//
-//        if (is_null($id)) {
-//            $currentUser = Yii::$app->user->identity;
-//            $users = User::find()->where(['!=', 'id', Yii::$app->user->id])->all();
-//        }
-//
-//        $searchModel = new UserSearch();
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//
-//        return $this->render('user-home', [
-//                    'listDataProvider' => $dataProvider,
-//                    'searchModel' => $searchModel,
-//                    'users' => $users,
-//                    'currentUser' => $currentUser,   
-//        ]);
-//    }
+
     public function actionReg() {
         if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
             return $this->redirect(['user/index', 'username' => Yii::$app->user->identity->username]);
         } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN) {
-            return $this->redirect(['/admin/admin/index']);
+            return $this->redirect(['/admin']);
         }
 
         $model = new RegForm();
@@ -106,7 +90,7 @@ class AuthController extends AppController {
         if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
             return $this->redirect(['user/index','username'=> Yii::$app->user->identity->username]);
         }elseif(!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN){
-            return $this->redirect(['/admin/admin/index']);
+            return $this->redirect(['/admin']);
         }
 
         $model = new LoginForm();
@@ -115,7 +99,7 @@ class AuthController extends AppController {
             
             if($model->login()){
                 if($model->user->role == User::IS_ADMIN){
-                    return $this->redirect(['/admin/admin/index']);
+                    return $this->redirect(['/admin']);
                 }else{
                     return $this->redirect(['user/index', 'username'=> Yii::$app->user->identity->username]);
                 }

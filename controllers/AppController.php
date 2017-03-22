@@ -25,7 +25,7 @@ class AppController extends Controller {
                     ],
                     [// первое правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
-                        'controllers' => ['admin/admin'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
+                        'controllers' => ['admin/user'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'matchCallback' => function($rule, $action) {
                             return (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::IS_ADMIN) ? true : false;
                         }

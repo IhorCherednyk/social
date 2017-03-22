@@ -28,6 +28,7 @@ AppAsset::register($this);
 
             <nav class=" navbar-inverse navbar-right navbar-fixed-top navbar">
                 <div class="container">
+                    
                     <?=
                     Menu::widget([
                         'options' => [
@@ -36,9 +37,14 @@ AppAsset::register($this);
                         'encodeLabels' => false,
                         'items' => [
                             [
-                                'label' => Yii::t('app', 'Admin'),
+                                'label' => Yii::t('app', 'User'),
                                 'url' => ['/admin/user/index'],
-                                'visible' => (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::IS_ADMIN)
+                                
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Message'),
+                                'url' => ['/admin/user/index'],
+                                
                             ],
                                 [
                                 'label' => Yii::t('app', 'Home'),

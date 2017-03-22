@@ -45,7 +45,7 @@ $config = [
                 'auth' => 'auth/login',
                 'user/<username:\w+>/<page:\d+>/<per-page:\d+>' => '/user/index',
                 'user/<username:\w+>' => '/user/index',
-                'admin' => 'admin/admin/index'
+                'admin' => 'admin/user/index'
             ],
         ],
     ],
