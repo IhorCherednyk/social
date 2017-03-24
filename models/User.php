@@ -52,6 +52,10 @@ class User extends ActiveRecord implements IdentityInterface {
         return $this->hasMany(Message::className(), ['sender_id' => 'id']);
     }
     
+    public function getCountMessages(){
+        return $this->hasMany(Message::className(), ['sender_id' => 'id'])->count();
+    }
+    
     /* Поведения */
 
     public function behaviors() {

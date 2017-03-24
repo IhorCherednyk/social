@@ -10,13 +10,11 @@ use Yii;
 class UserMessagesController extends AppController {
 
 
-//    3. Смена статуса письма: могу ли я создать новый action который будет открывать письмо
-//           в _view делать проверку по $model его статус и в заисимости от статуса гинерить разные ссылки
-//           если сообщение прочитано ссылка  просто вести на action если нет то ссылка будет содержать
-//           в себе id письма я его буду в action находить по id и менять ему статус
+
     
     public function actionIncomingMessage() {
 //        здесь надо получать sender_id
+        
         $searchModel = new MessageSearch();
         $searchModel->type = Message::MESSAGE_INCOMING;
         $dataProvider = $searchModel->search(Yii::$app->request->post());
