@@ -17,10 +17,11 @@ class UserMessagesController extends AppController {
     
     public function actionIncomingMessage() {
 //        здесь надо получать sender_id
+        
         $searchModel = new MessageSearch();
         $searchModel->type = Message::MESSAGE_INCOMING;
         $dataProvider = $searchModel->search(Yii::$app->request->post());
-
+        
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,

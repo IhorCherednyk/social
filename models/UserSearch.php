@@ -51,6 +51,7 @@ class UserSearch extends User {
         ]);
 
         $this->load($params);
+        
         $query->where(['!=', 'id', \Yii::$app->user->id])->andWhere(['!=', 'id', $user->id])->andWhere(['=', 'status', User::STATUS_ACTIVE])
                 ->andWhere(['!=', 'role', User::IS_ADMIN]);
 //        D($query->createCommand()->getSql());
@@ -71,7 +72,7 @@ class UserSearch extends User {
             'role' => $this->role,
             'last_login_date' => $this->last_login_date,
         ]);
-
+        
         $query->andFilterWhere(['like', 'username', $this->username]);
 
         return $dataProvider;
