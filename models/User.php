@@ -17,7 +17,6 @@ class User extends ActiveRecord implements IdentityInterface {
     const IS_USER = 3;
 
     public $password;
-
     public function rules() {
         return [
                 [['username', 'email', 'password'], 'filter', 'filter' => 'trim'],
@@ -50,6 +49,10 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getMessagesSender()
     {
         return $this->hasMany(Message::className(), ['sender_id' => 'id']);
+    }
+    
+    public function getCountMessages(){
+        return $this->hasMany(Message::className(), ['sender_id' => 'id'])->count();
     }
     
     /* Поведения */

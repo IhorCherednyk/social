@@ -1,35 +1,43 @@
 <?php
 
-namespace app\modules\admin\controllers;
+namespace app\modules\message\controllers;
 
 use app\controllers\AdminController;
-use app\models\User;
+use app\models\Message;
+use app\modules\message\models\MessagerSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-use app\modules\admin\models\UserSearch;
 
 /**
- * AdminController implements the CRUD actions for User model.
+ * MessageController implements the CRUD actions for Message model.
  */
-class UserController extends AdminController
+class MessageController extends AdminController
 {
     /**
      * @inheritdoc
      */
-//    public $layout = 'admin';
-
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
 
     /**
-     * Lists all User models.
+     * Lists all Message models.
      * @return mixed
      */
-    
-    
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,Yii::$app->user->identity);
+        $searchModel = new MessagerSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -37,7 +45,7 @@ class UserController extends AdminController
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single Message model.
      * @param integer $id
      * @return mixed
      */
@@ -49,13 +57,13 @@ class UserController extends AdminController
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Message model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new Message();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -67,7 +75,7 @@ class UserController extends AdminController
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Message model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -86,7 +94,7 @@ class UserController extends AdminController
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Message model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -99,15 +107,15 @@ class UserController extends AdminController
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Message model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Message the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Message::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

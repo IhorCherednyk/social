@@ -45,7 +45,8 @@ $config = [
                 'auth' => 'auth/login',
                 'user/<username:\w+>/<page:\d+>/<per-page:\d+>' => '/user/index',
                 'user/<username:\w+>' => '/user/index',
-                'admin' => 'admin/user/index'
+                'admin' => 'admin/user/index',
+                'message' => 'message/message/index'
             ],
         ],
     ],
@@ -55,7 +56,12 @@ $config = [
             'class' => 'app\modules\admin\Module',
             'layout' => 'admin'
         ],
+        'message' => [
+            'class' => 'app\modules\message\Module',
+            'layout' => 'admin'
+        ],
     ],
+
     'params' => $params,
 ];
 

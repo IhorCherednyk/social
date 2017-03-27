@@ -35,11 +35,11 @@ class MessageSearch extends Message
     {
         
         $query = Message::find();
-        
-        
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
         $this->load($params);
         
         if($this->type == Message::MESSAGE_INCOMING){
@@ -68,10 +68,9 @@ class MessageSearch extends Message
             'recipient_id' => $this->recipient_id,
             'text' => $this->text
         ]);
-//        D($query->createCommand()->getSql());
        
         $query->andFilterWhere(['like', 'username', $this->username]);
-//        D($query->createCommand()->sql);
+
         return $dataProvider;
     }
 }
