@@ -42,12 +42,9 @@ class AuthController extends AppController {
             if ($user && $model->sendEmail($user)) {
                 Yii::$app->session->setFlash('confirm-email', 'На ваш email отправлено письмо для подтверждения email');
                 return $this->goHome();
-            } else {
-
-                Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
-                Yii::error('Ошибка при регистрации');
-                return $this->refresh();
-            }
+            } 
+            Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
+            Yii::error('Ошибка при регистрации');
         }
         
         return $this->render(

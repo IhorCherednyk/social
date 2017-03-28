@@ -54,6 +54,9 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getCountMessages(){
         return $this->hasMany(Message::className(), ['sender_id' => 'id'])->count();
     }
+     public function getCountNotReadMessage(){
+        return $this->hasMany(Message::className(), ['recipient_id' => 'id'])->where(['status' => Message::STATUS_UNREADED])->count();
+    }
     
     /* Поведения */
 

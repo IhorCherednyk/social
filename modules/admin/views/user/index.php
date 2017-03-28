@@ -48,6 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->countMessages;
                 }
             ],
+                [
+                'attribute' => 'incomingMessage',
+                'value' => function($model) {
+                    return $model->countNotReadMessage;
+                }
+            ],
 //                [
 //                'attribute' => 'created_at',
 //                'headerOptions' => [

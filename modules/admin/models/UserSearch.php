@@ -18,11 +18,12 @@ class UserSearch extends User {
     public $letterFrom;
     public $letterTo;
     public $cMessages;
+    public $incomingMessage;
 
     public function rules() {
         return [
                 [['id', 'status', 'created_at', 'updated_at', 'role', 'last_login_date'], 'integer'],
-                [['username', 'email', 'password_hash', 'auth_key', 'email_activation_key', 'letterFrom', 'letterTo', 'cMessages'], 'safe'],
+                [['username', 'email', 'password_hash', 'auth_key', 'email_activation_key', 'letterFrom', 'letterTo', 'cMessages','incomingMessage'], 'safe'],
         ];
     }
 
@@ -45,19 +46,42 @@ class UserSearch extends User {
 //        SELECT t.*, count(*) as cMessages FROM `user` t LEFT JOIN message m ON t.id = m.sender_id GROUP BY id
 //        $query = User::find();
         $query = User::find()->alias('t');
-        $query->select(['t.*', 'count(*) as cMessages']);
-        $query->groupBy('id');
-        $query->leftJoin('message m', 't.id = m.sender_id');
-//        echo  $query->createCommand()->getRawSql();die();   
+        
+        
+//           1. Вариант соеденения если считать только одно поле
+//        $query->select(['t.*', 'count(*) as cMessages']);
+//        $query->groupBy('t.id');
+//        $query->leftJoin('message m', 't.id = m.sender_id');
+
+//            2. Если кастомных полей больше одного то нужно джоинить подзапросы
+        $query->select(['t.*','uc.cMessage','uc2.incomingMessage']);
+        $subQuery = \app\models\Message::find()
+                ->select('sender_id,COUNT(sender_id) as cMessage')
+                ->groupBy('sender_id');
+        $subQuery2 = \app\models\Message::find()
+                ->select('recipient_id,COUNT(recipient_id) as incomingMessage')
+                ->where(['status' => \app\models\Message::STATUS_UNREADED])
+                ->groupBy('recipient_id');
+        
+        $query->leftJoin(['uc' => $subQuery], 'uc.sender_id = t.id');
+        $query->leftJoin(['uc2' => $subQuery2], 'uc2.recipient_id = t.id');
+        
+//        echo  $query->createCommand()->getRawSql();die(); 
+        
+//        $query = UserGroups::find();
+//        $subQuery = UserGroupRelations::find()
+//            ->select('group_id, COUNT(user_id) as userCount')
+//                ->groupBy('group_id');
+//        
+//        $query->leftJoin(['uc' => $subQuery], 'uc.group_id = id');
+        
+        
+        
+       
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        if (empty($dataProvider->sort->getAttributeOrders())) {
-            $dataProvider->query->orderBy(['id' => SORT_DESC]);
-        }
-
-
+        
         $dataProvider->setSort([
             'attributes' => [
                 'username' => [
@@ -74,20 +98,21 @@ class UserSearch extends User {
                     'asc' => ['email' => SORT_ASC],
                     'desc' => ['email' => SORT_DESC],
                     'default' => SORT_DESC
+                ],
+                'cMessages' => [
+                    'asc' => ['cMessages' => SORT_ASC],
+                    'desc' => ['cMessages' => SORT_DESC],
+                    'default' => SORT_DESC
                 ]
             ]
         ]);
 
 
         $this->load($params);
-
-
+        
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
-//        $this->addCondition($query, 'cMessages', true);
         // grid filtering conditions
         $query->andFilterWhere([
             'status' => $this->status,
@@ -95,6 +120,12 @@ class UserSearch extends User {
             'role' => $this->role,
             'last_login_date' => $this->last_login_date,
         ]);
+        
+        $query->andFilterHaving([
+            'cMessages' => $this->cMessages,
+            'incomingMessage' => $this->incomingMessage
+        ]);
+        
         $query->andFilterWhere(['like', 'username', $this->username])
                 ->andFilterWhere(['like', 'email', $this->email])
                 ->andFilterWhere(['like', 'password_hash', $this->password_hash])
@@ -106,19 +137,5 @@ class UserSearch extends User {
         return $dataProvider;
     }
 
-//    protected function addCondition($query, $attribute, $partialMatch = false) {
-//        $valid = null;
-//        if (isset($this->$attribute)) {
-//            $value = $this->$attribute;
-//        }
-//        if (trim($value) === '') {
-//            return;
-//        }
-//        if ($partialMatch) {
-//            $query->andWhere(['like', $attribute, $value]);
-//        } else {
-//            $query->andWhere([$attribute => $value]);
-//        }
-//    }
 
 }
