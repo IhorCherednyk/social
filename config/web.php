@@ -8,6 +8,7 @@ $config = [
     'bootstrap' => ['log'],
     'defaultRoute' => 'auth/reg',
     'components' => [
+        
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'H9YywGVCYmH-IzEyN8zkc6_JXNEH-0pd',
@@ -54,11 +55,9 @@ $config = [
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
-            'layout' => 'admin'
         ],
         'message' => [
             'class' => 'app\modules\message\Module',
-            'layout' => 'admin'
         ],
     ],
 

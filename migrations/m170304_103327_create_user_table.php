@@ -17,14 +17,15 @@ class m170304_103327_create_user_table extends Migration
             'username' => $this->string()->notNull(),
             'email' => $this->string()->notNull(),
             'password_hash' => $this->string()->notNull(),
-            'status' => $this->integer(),
+            'status' => $this->integer()->defaultValue(1),
             'auth_key' => $this->string(32)->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-            'role' => $this->integer(),
+            'role' => $this->integer()->defaultValue(3),
             'last_login_date' => $this->integer()->notNull(),
             'email_activation_key' =>$this->string()->notNull()
         ]);
+
         
     }
     

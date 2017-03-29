@@ -18,7 +18,7 @@ class RegForm extends Model {
     public function rules() {
         return [
                 [['username', 'email', 'password'], 'filter', 'filter' => 'trim'], // удаляем пробелы вокруг
-//            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't equal" ],
+            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't equal" ],
             [['username', 'email', 'password','first_name', 'last_name'], 'required'], // обязательны
             ['username', 'string', 'min' => 2, 'max' => 255], // содержать 2-255 символов
             ['password', 'string', 'min' => 2, 'max' => 255], // содержать 2-255
@@ -26,10 +26,8 @@ class RegForm extends Model {
             ['email', 'email'], //
             [['username'], 'unique', 'targetClass' => User::className(), 'message' => 'this username already exist'], //уникальность
             ['status', 'default', 'value' => User::STATUS_NOT_ACTIVE], //говорит что если в поле null то по умолчанию применяется Value 'on' => указывает на состояние
-            ['status', 'in', 'range' => [
-                    User::STATUS_NOT_ACTIVE,
-                    User::STATUS_ACTIVE
-                ]], // говорит какие еще значения может иеметь статус
+
+
         ];
     }
 
@@ -39,7 +37,6 @@ class RegForm extends Model {
         $user->generateAuthKey();
         $user->generateEmailActivationKey();
         $user->setAttributes($this->attributes);
-        $user->role = User::IS_USER;
         if($user->save()){
             $profile = new Profile();
             $profile->setAttributes($this->attributes);
@@ -48,14 +45,19 @@ class RegForm extends Model {
         }
         return null;
     }
+    
+    
+    public function createEmail($user) {
+        $email = New Email();
+        $email->type = Email::EMAIL_ACTIVATE;
+        $email->status = Email::STATUS_NOTSUCCSSES;
+        $email->recipient_email = $user->email;
+        $email->data = $user->email_activation_key;
+        if($email->save()){
+            $email->sendEmail($email->id);
+        }
 
-    public function sendEmail($user) {
 
-        return Yii::$app->mailer->compose('activationEmail', ['user' => $user])
-                        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' (отправлено роботом)'])
-                        ->setTo($this->email)
-                        ->setSubject('Сброс пароля для ' . Yii::$app->name)
-                        ->send();
     }
 
 }

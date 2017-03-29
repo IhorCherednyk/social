@@ -11,7 +11,7 @@ class Module extends \yii\base\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'app\modules\message\controllers';
-
+    public $layout = '/admin';
     /**
      * @inheritdoc
      */

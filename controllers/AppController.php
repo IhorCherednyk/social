@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use app\components\MyBehaviors;
 use Yii;
+use app\models\User;
 
 class AppController extends Controller {
 
@@ -19,11 +20,16 @@ class AppController extends Controller {
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['auth'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'actions' => ['reg', 'login'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ REG, LOGIN
-//                        'matchCallback' => function($rule, $action) {
-//                            return (\Yii::$app->user->isGuest) ? true : Yii::$app->getResponse()->redirect(['/auth/profile']);
-//                        }
+                        'matchCallback' => function($rule, $action) {
+                            if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
+                                return $this->redirect(['user/index', 'username' => Yii::$app->user->identity->username]);
+                            } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN) {
+                                return $this->redirect(['/admin']);
+                            }
+                            return true;
+                        }
                     ],
-                    [// первое правило гласит
+                        [// первое правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['admin/user'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
                         'matchCallback' => function($rule, $action) {
@@ -47,7 +53,7 @@ class AppController extends Controller {
                         [// второе правило гласит
                         'allow' => true, //(ДЕЙСТВИЕ) РАЗРЕШИТЬ ДОСТУП
                         'controllers' => ['user-messages'], //(КОНТРОЛЛЕР) ДЛЯ ЭТОГО КОНТРОЛЛЕРА
-                        'actions' => ['incoming-message','outgoing-message','read-message','write-message'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
+                        'actions' => ['incoming-message', 'outgoing-message', 'read-message', 'write-message'], //(ВИДЫ) ДЛЯ ДЕЙСТВИЙ LOGOUT
                         'verbs' => ['POST', 'GET'], //(ЗАПРОСЫ)С ТАКИМИ ЗАПРОСАМИ КАК POST
                         'roles' => ['@']//(КОМУ?) ПОЛЛЬЗОВАТЕЛЯМ КОТОРЫЕ ЯВЛЯЮТСЯ ЮЗЕРАМИ
                     ],
