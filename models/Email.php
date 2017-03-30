@@ -60,20 +60,38 @@ class Email extends \yii\db\ActiveRecord {
         ];
     }
     
-    public function sendEmail($id){
-        $email = $this->findById($id);
-        if($email){
-            return Yii::$app->mailer->compose('activationEmail', ['user' => $user])
-                            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' (отправлено роботом)'])
-                            ->setTo($this->email)
-                            ->setSubject('Сброс пароля для ' . Yii::$app->name)
-                            ->send();
+    public function createEmail($user,$status, $token = null){
+        $this->type = $status;
+        $this->status = $this::STATUS_NOTSUCCSSES;
+        $this->recipient_email = $user->email;
+        (is_null($token))?$this->data = $user->email_activation_key: $this->data = $token;
+        if ($this->save()) {
+          
         }
     }
+
     
-    public static function findById($id) {
+//    public function sendEmail($id){
+//        $email = $this->findById($id);
+//        if($email){
+//            return Yii::$app->mailer->compose('activationEmail', ['user' => $user])
+//                            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' (отправлено роботом)'])
+//                            ->setTo($this->email)
+//                            ->setSubject('Сброс пароля для ' . Yii::$app->name)
+//                            ->send();
+//        }
+//    }
+//    
+    public static function findByUserEmail($email) {
         return static::findOne([
-                    'id' => $id
+                    'recipient_email' => $email,
+                    'type' => self::EMAIL_ACTIVATE
+        ]);
+    }
+    public static function findByUserToken($key) {
+        return static::findOne([
+                    'data' => $key,
+                    'type' => self::EMAIL_RESETPASSWORD
         ]);
     }
 
