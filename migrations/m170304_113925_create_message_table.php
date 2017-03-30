@@ -25,6 +25,7 @@ class m170304_113925_create_message_table extends Migration
             'sender_id' => $this->integer()->notNull(),
             'recipient_id' => $this->integer()->notNull(),
         ]);
+        
 
         // creates index for column `sender_id`
         $this->createIndex(

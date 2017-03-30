@@ -16,7 +16,7 @@ class AdminController extends Controller {
                 'rules' => [
                         [
                         'allow' => true,
-                        'controllers' => ['admin/user'],
+                        'controllers' => ['admin/user','admin/message'],
                         'matchCallback' => function($rule, $action) {
                             return (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::IS_ADMIN) ? true : false;
                         }

@@ -25,46 +25,31 @@ use yii\web\UploadedFile;
  * @author Anastasiya
  */
 class AuthController extends AppController {
-    
 
     public function actionReg() {
-        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
-            return $this->redirect(['user/index', 'username' => Yii::$app->user->identity->username]);
-        } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN) {
-            return $this->redirect(['/admin']);
-        }
 
         $model = new RegForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            
+
             $user = $model->reg();
-            if ($user && $model->sendEmail($user)) {
+            if ($user && $model->createEmail($user)) {
                 Yii::$app->session->setFlash('confirm-email', 'На ваш email отправлено письмо для подтверждения email');
                 return $this->goHome();
-            } 
+            }
             Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
             Yii::error('Ошибка при регистрации');
         }
-        
+
         return $this->render(
             'reg', ['model' => $model]
         );
     }
 
     
-    
-    
-    
-    
-    
-    
-    
     public function actionActivateEmail($key) {
         $user = User::findByEmailKey($key);
-        
         if ($user) {
-            
             $user->status = User::STATUS_ACTIVE;
             $user->save();
             if (Yii::$app->getUser()->login($user)) {
@@ -72,85 +57,11 @@ class AuthController extends AppController {
             }
         }
         Yii::$app->session->setFlash('error', 'Возникла ошибка при подтверждении пароля попробуйте зарегистрироваться заново');
-        
+
         return redirect(['auth/reg']);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    public function actionLogin() {
-        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_USER) {
-            return $this->redirect(['user/index','username'=> Yii::$app->user->identity->username]);
-        }elseif(!Yii::$app->user->isGuest && Yii::$app->user->identity->role = User::IS_ADMIN){
-            return $this->redirect(['/admin']);
-        }
-
-        $model = new LoginForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            
-            if($model->login()){
-                if($model->user->role == User::IS_ADMIN){
-                    return $this->redirect(['/admin']);
-                }else{
-                    return $this->redirect(['user/index', 'username'=> Yii::$app->user->identity->username]);
-                }
-            }else{
-               
-              Yii::$app->session->setFlash('error', 'Возможно вы не активировали свой email'); 
-              return $this->refresh();
-            }
-            
-        }
-        return $this->render('login', [
-                    'model' => $model,
-        ]);
-    }
-
-    
-    
-
-    
-    public function actionLogout() {
-        Yii::$app->user->logout();
-        return $this->redirect(['auth/login']);
-    }
-
-    
-    
-    
-    
-    
-    public function actionProfile() {
-        $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
-
-        if ($model->load(Yii::$app->request->post())) {
-
-            $model->file = UploadedFile::getInstance($model, 'file');
-
-            if ($model->validate()) {
-
-                $model->file = ImageHelper::saveImage($model);
-
-
-                if ($model->updateProfile($model)) {
-                    Yii::$app->session->setFlash('success', 'Профиль изменен');
-                } else {
-                    Yii::$app->session->setFlash('error', 'Профиль не изменен');
-                    Yii::error('Ошибка записи. Профиль не изменен');
-                    return $this->refresh();
-                }
-            }
-        }
-        return $this->render('profile', ['model' => $model]);
-    }
-
-    public function actionSendEmail() {
+     public function actionSendEmail() {
         $model = new SendEmailForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -183,5 +94,59 @@ class AuthController extends AppController {
             return $this->redirect(['auth/send-email']);
         }
     }
+
+    public function actionLogin() {
+        $model = new LoginForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->login()) {
+                if ($model->user->role == User::IS_ADMIN) {
+                    return $this->redirect(['/admin']);
+                } else {
+                    return $this->redirect(['user/index', 'username' => Yii::$app->user->identity->username]);
+                }
+            } else {
+
+                Yii::$app->session->setFlash('error', 'Возможно вы не активировали свой email');
+                return $this->refresh();
+            }
+        }
+        return $this->render('login', [
+                    'model' => $model,
+        ]);
+    }
+
+    public function actionLogout() {
+        Yii::$app->user->logout();
+        return $this->redirect(['auth/login']);
+    }
+
+    public function actionProfile() {
+        $model = ($model = Profile::findOne(['user_id' => Yii::$app->user->id])) ? $model : new Profile();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->file = UploadedFile::getInstance($model, 'file');
+
+            if ($model->validate()) {
+
+                $model->file = ImageHelper::saveImage($model);
+
+
+                if ($model->updateProfile($model)) {
+                    Yii::$app->session->setFlash('success', 'Профиль изменен');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Профиль не изменен');
+                    Yii::error('Ошибка записи. Профиль не изменен');
+                    return $this->refresh();
+                }
+            }
+        }
+        return $this->render('profile', ['model' => $model]);
+    }
+    
+    
+
 
 }

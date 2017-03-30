@@ -17,6 +17,7 @@ class User extends ActiveRecord implements IdentityInterface {
     const IS_USER = 3;
 
     public $password;
+
     public function rules() {
         return [
                 [['username', 'email', 'password'], 'filter', 'filter' => 'trim'],
@@ -26,6 +27,7 @@ class User extends ActiveRecord implements IdentityInterface {
                 ['password', 'required', 'on' => 'create'],
                 ['username', 'unique', 'message' => 'this name already exist'],
                 ['email', 'unique', 'message' => 'this email already exist.'],
+
         ];
     }
 
@@ -36,28 +38,27 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getProfile() {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
-    public function getToken()
-    {
+
+    public function getToken() {
         return $this->hasOne(Token::className(), ['user_id' => 'id']);
     }
 
-    public function getMessages()
-    {
+    public function getMessages() {
         return $this->hasMany(Message::className(), ['recipient_id' => 'id']);
     }
 
-    public function getMessagesSender()
-    {
+    public function getMessagesSender() {
         return $this->hasMany(Message::className(), ['sender_id' => 'id']);
     }
-    
-    public function getCountMessages(){
+
+    public function getCountMessages() {
         return $this->hasMany(Message::className(), ['sender_id' => 'id'])->count();
     }
-     public function getCountNotReadMessage(){
+
+    public function getCountNotReadMessage() {
         return $this->hasMany(Message::className(), ['recipient_id' => 'id'])->where(['status' => Message::STATUS_UNREADED])->count();
     }
-    
+
     /* Поведения */
 
     public function behaviors() {
@@ -74,6 +75,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function generateAuthKey() {
         $this->auth_key = \Yii::$app->security->generateRandomString();
     }
+
     public function generateEmailActivationKey() {
         $this->email_activation_key = \Yii::$app->security->generateRandomString($length = 6);
     }
@@ -98,18 +100,19 @@ class User extends ActiveRecord implements IdentityInterface {
                     'username' => $username
         ]);
     }
+
     public static function findById($id) {
         return static::findOne([
                     'id' => $id
         ]);
     }
 
-    public static function findByEmailKey($key)
-    {
+    public static function findByEmailKey($key) {
         return static::findOne([
-            'email_activation_key' => $key,
+                    'email_activation_key' => $key,
         ]);
     }
+
 // IdentityInterface
 
 
