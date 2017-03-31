@@ -37,16 +37,20 @@ class SendEmailForm extends Model
 
         if($user){
             $token = ($token = Token::findOne(['user_id' => $user->id])) ? $token : new Token();
-            
             $token->generateSecretKey();
             $token->user_id = $user->id;
             if($token->save()){
+                $email = ($email = Email::findByUserToken($token->secret_key)) ? $email : new Email();
+                $email->createEmail($user,Email::EMAIL_RESETPASSWORD,$token->secret_key);
                 
-                return Yii::$app->mailer->compose('resetPassword', ['token' => $token, 'user' => $user])
-                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
-                    ->setTo($this->email)
-                    ->setSubject('Сброс пароля для '.Yii::$app->name)
-                    ->send();
+                return true;
+                
+                
+//                return Yii::$app->mailer->compose('resetPassword', ['token' => $token, 'user' => $user])
+//                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
+//                    ->setTo($this->email)
+//                    ->setSubject('Сброс пароля для '.Yii::$app->name)
+//                    ->send();
             }
         }
 

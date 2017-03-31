@@ -47,17 +47,6 @@ class RegForm extends Model {
     }
     
     
-    public function createEmail($user) {
-        $email = New Email();
-        $email->type = Email::EMAIL_ACTIVATE;
-        $email->status = Email::STATUS_NOTSUCCSSES;
-        $email->recipient_email = $user->email;
-        $email->data = $user->email_activation_key;
-        if($email->save()){
-            $email->sendEmail($email->id);
-        }
 
-
-    }
 
 }

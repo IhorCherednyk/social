@@ -31,8 +31,11 @@ class ResetPasswordForm extends Model
         $user = User::findById($token->user_id);
         $user->setPassword($this->password);
         $user->password = $this->password;
-        $token->delete();
-        return $user->save();
+        if($user->save()){
+            $token->delete();
+            return true;
+        }
+        return false;
     }
 
 }
