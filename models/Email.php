@@ -24,6 +24,7 @@ class Email extends \yii\db\ActiveRecord {
     const EMAIL_RESETPASSWORD = 1;
     const STATUS_SUCCSSES = 2;
     const STATUS_NOTSUCCSSES = 3;
+    const STATUS_ERROR = 4;
 
     public static function tableName() {
         return '{{%email}}';
@@ -69,19 +70,7 @@ class Email extends \yii\db\ActiveRecord {
           
         }
     }
-
     
-//    public function sendEmail($id){
-//        $email = $this->findById($id);
-//        if($email){
-//            return Yii::$app->mailer->compose('activationEmail', ['user' => $user])
-//                            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' (отправлено роботом)'])
-//                            ->setTo($this->email)
-//                            ->setSubject('Сброс пароля для ' . Yii::$app->name)
-//                            ->send();
-//        }
-//    }
-//    
     public static function findByUserEmail($email) {
         return static::findOne([
                     'recipient_email' => $email,

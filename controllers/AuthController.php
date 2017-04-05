@@ -30,9 +30,7 @@ class AuthController extends AppController {
     public function actionReg() {
 
         $model = new RegForm();
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             $user = $model->reg();
             if ($user) {
                 $email = ($email = Email::findByUserEmail($user->email)) ? $email : new Email();
