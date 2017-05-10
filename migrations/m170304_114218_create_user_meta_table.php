@@ -26,7 +26,11 @@ class m170304_114218_create_user_meta_table extends Migration
             'user_id' => $this->integer(),
             'birthday' => $this->integer()
         ]);
-
+        $this->insert('user_meta', [
+            'first_name' => 'admin',
+            'last_name' => 'admin',
+            'user_id' => '1',
+        ]);
         // creates index for column `user_id`
         $this->createIndex(
             'idx-user_meta-user_id',

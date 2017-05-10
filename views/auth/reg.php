@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Register';
 ?>
 <div class="site-login">
 
@@ -19,6 +19,7 @@ $this->title = 'Login';
     if (Yii::$app->session->getFlash('error')) {
         echo Yii::$app->session->getFlash('error');
     }
+
     ?>
 
     <?php
@@ -37,7 +38,7 @@ $this->title = 'Login';
     <?= $form->field($model, 'last_name')->textInput() ?>
     <?= $form->field($model, 'password')->passwordInput() ?>
     <?= $form->field($model, 'password_repeat')->passwordInput() ?>
-<?= $form->field($model, 'email')->input('email') ?> 
+    <?= $form->field($model, 'email')->input('email') ?> 
 
 
 
