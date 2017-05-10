@@ -38742,3 +38742,502 @@ Stack trace:
     ]
     'argc' => 2
 ]
+2017-05-10 16:24:13 [-][-][-][error][yii\base\ErrorException:64] exception 'yii\base\ErrorException' with message 'yii\console\controllers\MigrateController::createMigration(): Failed opening required 'D:\train\social.web\social/migrations\m170320_081104_change_message_attribute.php' (include_path='C:\xampp\php\PEAR')' in D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\MigrateController.php:188
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleFatalError()
+#1 {main}
+2017-05-10 16:24:09 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494426249.5788
+    'REQUEST_TIME' => 1494426249
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate/down'
+        2 => '5'
+    ]
+    'argc' => 3
+]
+2017-05-10 16:24:54 [-][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [1049] Unknown database 'social'' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php:630
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(630): PDO->__construct('mysql:host=loca...', 'root', '', NULL)
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(563): yii\db\Connection->createPdoInstance()
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(896): yii\db\Connection->open()
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(883): yii\db\Connection->getMasterPdo()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(219): yii\db\Connection->getSlavePdo()
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(896): yii\db\Command->prepare(true)
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(199): yii\db\Command->queryAll()
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(98): yii\db\mysql\Schema->findColumns(Object(yii\db\TableSchema))
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\db\Schema.php(152): yii\db\mysql\Schema->loadTableSchema('migration')
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\MigrateController.php(199): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(774): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(138): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#13 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#14 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#15 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#16 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#17 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#18 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#19 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#20 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#21 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#22 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [1049] Unknown database 'social'' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php:568
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(896): yii\db\Connection->open()
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(883): yii\db\Connection->getMasterPdo()
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(219): yii\db\Connection->getSlavePdo()
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(896): yii\db\Command->prepare(true)
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(199): yii\db\Command->queryAll()
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(98): yii\db\mysql\Schema->findColumns(Object(yii\db\TableSchema))
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\db\Schema.php(152): yii\db\mysql\Schema->loadTableSchema('migration')
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\MigrateController.php(199): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(774): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(138): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#11 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#13 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#14 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#15 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#16 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#17 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#18 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#19 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#20 {main}
+Additional Information:
+
+2017-05-10 16:24:54 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494426294.2514
+    'REQUEST_TIME' => 1494426294
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]
+2017-05-10 16:25:18 [-][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [1049] Unknown database 'social'' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php:630
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(630): PDO->__construct('mysql:host=loca...', 'root', '', NULL)
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(563): yii\db\Connection->createPdoInstance()
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(896): yii\db\Connection->open()
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(883): yii\db\Connection->getMasterPdo()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(219): yii\db\Connection->getSlavePdo()
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(896): yii\db\Command->prepare(true)
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(199): yii\db\Command->queryAll()
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(98): yii\db\mysql\Schema->findColumns(Object(yii\db\TableSchema))
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\db\Schema.php(152): yii\db\mysql\Schema->loadTableSchema('migration')
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\MigrateController.php(199): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(774): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(138): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#13 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#14 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#15 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#16 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#17 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#18 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#19 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#20 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#21 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#22 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [1049] Unknown database 'social'' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php:568
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(896): yii\db\Connection->open()
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Connection.php(883): yii\db\Connection->getMasterPdo()
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(219): yii\db\Connection->getSlavePdo()
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(896): yii\db\Command->prepare(true)
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(199): yii\db\Command->queryAll()
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\db\mysql\Schema.php(98): yii\db\mysql\Schema->findColumns(Object(yii\db\TableSchema))
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\db\Schema.php(152): yii\db\mysql\Schema->loadTableSchema('migration')
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\MigrateController.php(199): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(774): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(138): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#11 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#13 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#14 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#15 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#16 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#17 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#18 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#19 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#20 {main}
+Additional Information:
+
+2017-05-10 16:25:18 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494426318.0968
+    'REQUEST_TIME' => 1494426318
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]
+2017-05-10 16:36:05 [-][-][-][error][yii\base\UnknownPropertyException] exception 'yii\base\UnknownPropertyException' with message 'Getting unknown property: yii\console\Application::user' in D:\train\social.web\social\vendor\yiisoft\yii2\base\Component.php:147
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\di\ServiceLocator.php(75): yii\base\Component->__get('user')
+#1 D:\train\social.web\social\models\User.php(90): yii\di\ServiceLocator->__get('user')
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\base\Object.php(107): app\models\User->init()
+#3 D:\train\social.web\social\migrations\m170304_103327_create_user_table.php(15): yii\base\Object->__construct()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(654): m170304_103327_create_user_table->up()
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(166): yii\console\controllers\BaseMigrateController->migrateUp('m170304_103327_...')
+#6 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#13 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#14 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#15 {main}
+2017-05-10 16:36:03 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494426963.3787
+    'REQUEST_TIME' => 1494426963
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]
+2017-05-10 16:36:56 [-][-][-][error][yii\base\UnknownPropertyException] exception 'yii\base\UnknownPropertyException' with message 'Getting unknown property: yii\console\Application::user' in D:\train\social.web\social\vendor\yiisoft\yii2\base\Component.php:147
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\di\ServiceLocator.php(75): yii\base\Component->__get('user')
+#1 D:\train\social.web\social\models\User.php(90): yii\di\ServiceLocator->__get('user')
+#2 D:\train\social.web\social\vendor\yiisoft\yii2\base\Object.php(107): app\models\User->init()
+#3 D:\train\social.web\social\migrations\m170304_103327_create_user_table.php(16): yii\base\Object->__construct()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(654): m170304_103327_create_user_table->up()
+#5 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(166): yii\console\controllers\BaseMigrateController->migrateUp('m170304_103327_...')
+#6 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#13 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#14 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#15 {main}
+2017-05-10 16:36:55 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494427015.4186
+    'REQUEST_TIME' => 1494427015
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]
+2017-05-10 16:47:13 [-][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list'' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php:846
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(846): PDOStatement->execute()
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Migration.php(203): yii\db\Command->execute()
+#2 D:\train\social.web\social\migrations\m170304_114218_create_user_meta_table.php(33): yii\db\Migration->insert('user', Array)
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(654): m170304_114218_create_user_meta_table->up()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(166): yii\console\controllers\BaseMigrateController->migrateUp('m170304_114218_...')
+#5 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#13 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#14 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list'
+The SQL being executed was: INSERT INTO `user` (`first_name`, `last_name`, `user_id`) VALUES ('admin', 'admin', '1')' in D:\train\social.web\social\vendor\yiisoft\yii2\db\Schema.php:636
+Stack trace:
+#0 D:\train\social.web\social\vendor\yiisoft\yii2\db\Command.php(856): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `us...')
+#1 D:\train\social.web\social\vendor\yiisoft\yii2\db\Migration.php(203): yii\db\Command->execute()
+#2 D:\train\social.web\social\migrations\m170304_114218_create_user_meta_table.php(33): yii\db\Migration->insert('user', Array)
+#3 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(654): m170304_114218_create_user_meta_table->up()
+#4 D:\train\social.web\social\vendor\yiisoft\yii2\console\controllers\BaseMigrateController.php(166): yii\console\controllers\BaseMigrateController->migrateUp('m170304_114218_...')
+#5 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#6 D:\train\social.web\social\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#7 D:\train\social.web\social\vendor\yiisoft\yii2\base\Controller.php(156): yii\base\InlineAction->runWithParams(Array)
+#8 D:\train\social.web\social\vendor\yiisoft\yii2\console\Controller.php(128): yii\base\Controller->runAction('', Array)
+#9 D:\train\social.web\social\vendor\yiisoft\yii2\base\Module.php(523): yii\console\Controller->runAction('', Array)
+#10 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(180): yii\base\Module->runAction('migrate', Array)
+#11 D:\train\social.web\social\vendor\yiisoft\yii2\console\Application.php(147): yii\console\Application->runAction('migrate', Array)
+#12 D:\train\social.web\social\vendor\yiisoft\yii2\base\Application.php(380): yii\console\Application->handleRequest(Object(yii\console\Request))
+#13 D:\train\social.web\social\yii(20): yii\base\Application->run()
+#14 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'first_name' in 'field list'
+)
+
+2017-05-10 16:47:08 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\developer\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'DEVELOPER-ой'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\developer'
+    'LOCALAPPDATA' => 'C:\\Users\\developer\\AppData\\Local'
+    'LOGONSERVER' => '\\\\DEVELOPER-ой'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Git\\cmd;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files (x86)\\Skype\\Phone\\;C:\\Users\\developer\\AppData\\Roaming\\npm;C:\\Users\\developer\\AppData\\Roaming\\Composer\\vendor\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 37 Stepping 2, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2502'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'C:\\TEMP'
+    'TMP' => 'C:\\TEMP'
+    'USERDOMAIN' => 'developer-ой'
+    'USERNAME' => 'developer'
+    'USERPROFILE' => 'C:\\Users\\developer'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'PHP_SELF' => 'yii'
+    'SCRIPT_NAME' => 'yii'
+    'SCRIPT_FILENAME' => 'yii'
+    'PATH_TRANSLATED' => 'yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1494427628.3447
+    'REQUEST_TIME' => 1494427628
+    'argv' => [
+        0 => 'yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]

@@ -36,7 +36,7 @@ class AuthController extends AppController {
                 $email = ($email = Email::findByUserEmail($user->email)) ? $email : new Email();
                 $email->createEmail($user, Email::EMAIL_ACTIVATE);
                 Yii::$app->session->setFlash('confirm-email', 'На ваш email отправлено письмо для подтверждения email');
-                return $this->goHome();
+                return $this->redirect(['auth/login']);
             }
             Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
             Yii::error('Ошибка при регистрации');

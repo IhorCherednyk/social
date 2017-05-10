@@ -6,13 +6,21 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = '<Register></Register>';
+$this->title = 'Register';
 ?>
 <div class="site-login">
 
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php
+    if (Yii::$app->session->getFlash('confirm-email')) {
+        echo Yii::$app->session->getFlash('confirm-email');
+    }
+    if (Yii::$app->session->getFlash('error')) {
+        echo Yii::$app->session->getFlash('error');
+    }
 
+    ?>
 
     <?php
     $form = ActiveForm::begin([
@@ -30,7 +38,7 @@ $this->title = '<Register></Register>';
     <?= $form->field($model, 'last_name')->textInput() ?>
     <?= $form->field($model, 'password')->passwordInput() ?>
     <?= $form->field($model, 'password_repeat')->passwordInput() ?>
-<?= $form->field($model, 'email')->input('email') ?> 
+    <?= $form->field($model, 'email')->input('email') ?> 
 
 
 
