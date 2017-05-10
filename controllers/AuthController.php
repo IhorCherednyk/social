@@ -102,6 +102,7 @@ class AuthController extends AppController {
     }
 
     public function actionLogin() {
+        
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -150,5 +151,7 @@ class AuthController extends AppController {
         }
         return $this->render('profile', ['model' => $model]);
     }
+    
+ 
 
 }

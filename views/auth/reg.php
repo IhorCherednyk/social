@@ -6,20 +6,13 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = '<Register></Register>';
 ?>
 <div class="site-login">
 
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php
-    if (Yii::$app->session->getFlash('confirm-email')) {
-        echo Yii::$app->session->getFlash('confirm-email');
-    }
-    if (Yii::$app->session->getFlash('error')) {
-        echo Yii::$app->session->getFlash('error');
-    }
-    ?>
+
 
     <?php
     $form = ActiveForm::begin([
