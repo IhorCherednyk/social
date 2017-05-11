@@ -32,7 +32,7 @@ use app\models\Message;
     }
 </style>
 <div class="row">
-    <h1>Сообщения</h1>
+    <h1><?= $header?> сообщения</h1>
     <?= Html::a('Входящие', ['/user-messages/incoming-message'], ['class' => 'btn btn-success']); ?>
     <?= Html::a('Исходящие', ['/user-messages/outgoing-message'], ['class' => 'btn btn-success']); ?>
     <div class="col-md-6">

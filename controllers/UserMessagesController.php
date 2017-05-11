@@ -22,6 +22,7 @@ class UserMessagesController extends AppController {
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
+                    'header' => 'Входящие'
                     
         ]);
     }
@@ -33,6 +34,7 @@ class UserMessagesController extends AppController {
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
+                    'header' => 'Исходящие'
                     
         ]);
     }
